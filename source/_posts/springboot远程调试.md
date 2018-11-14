@@ -2,7 +2,7 @@
 title: springboot远程调试
 date: 2018-11-15 00:09:50
 tags: ["springboot","调试"]
-catogories: ["随笔"]
+categories: ["随笔"]
 ---
 ## springboot应用远程调试  
 Java程序远程调试的原理是基于JDWP(Java Debug Wire Protocol),具体可参考[JDWP 协议及实现](https://www.ibm.com/developerworks/cn/java/j-lo-jpda3/);  
