@@ -14,21 +14,25 @@
     
     
     
-    <title>truffle与graalVM | techzealot | techzealot&#39;s personal blogs</title>
+    <title>MAT排查问题思路 | techzealot | techzealot&#39;s personal blogs</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     
     <meta name="theme-color" content="#3F51B5">
     
     
-    <meta name="keywords" content="">
-    <meta property="og:type" content="article">
-<meta property="og:title" content="truffle与graalVM">
-<meta property="og:url" content="https://techzealot.github.io/2019/03/05/truffle与graalVM/index.html">
+    <meta name="keywords" content="jvm,mat">
+    <meta name="description" content="MAT分析jvm内存转储文件思路及操作： 查看leak suspect 查看Histogram分布  (按retainSize降序) merge shortest path to GC root  (按retainSize降序) list objects with incoming/outcoming  (按retainSize降序) 在big map上执行java collection &amp;gt;">
+<meta name="keywords" content="jvm,mat">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MAT排查问题思路">
+<meta property="og:url" content="https://techzealot.github.io/2020/01/16/MAT排查问题思路/index.html">
 <meta property="og:site_name" content="techzealot">
+<meta property="og:description" content="MAT分析jvm内存转储文件思路及操作： 查看leak suspect 查看Histogram分布  (按retainSize降序) merge shortest path to GC root  (按retainSize降序) list objects with incoming/outcoming  (按retainSize降序) 在big map上执行java collection &amp;gt;">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-03-04T17:35:38.561Z">
+<meta property="og:updated_time" content="2020-05-07T15:07:46.321Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="truffle与graalVM">
+<meta name="twitter:title" content="MAT排查问题思路">
+<meta name="twitter:description" content="MAT分析jvm内存转储文件思路及操作： 查看leak suspect 查看Histogram分布  (按retainSize降序) merge shortest path to GC root  (按retainSize降序) list objects with incoming/outcoming  (按retainSize降序) 在big map上执行java collection &amp;gt;">
     
     <link rel="shortcut icon" href="/favicon.ico">
     <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
@@ -107,7 +111,7 @@
         <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
           <i class="icon icon-lg icon-navicon"></i>
         </a>
-        <div class="flex-col header-title ellipsis">truffle与graalVM</div>
+        <div class="flex-col header-title ellipsis">MAT排查问题思路</div>
         
         <div class="search-wrap" id="search-wrap">
             <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
@@ -129,11 +133,11 @@
 <header class="content-header post-header">
 
     <div class="container fade-scale">
-        <h1 class="title">truffle与graalVM</h1>
+        <h1 class="title">MAT排查问题思路</h1>
         <h5 class="subtitle">
             
-                <time datetime="2019-03-04T17:35:38.000Z" itemprop="datePublished" class="page-time">
-  2019-03-05
+                <time datetime="2020-01-16T05:50:39.000Z" itemprop="datePublished" class="page-time">
+  2020-01-16
 </time>
 
 
@@ -149,14 +153,21 @@
 
 <div class="container body-wrap">
     
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#MAT分析jvm内存转储文件思路及操作："><span class="post-toc-number">1.</span> <span class="post-toc-text">MAT分析jvm内存转储文件思路及操作：</span></a></li></ol>
+        </nav>
+    </aside>
 
-<article id="post-truffle与graalVM"
+
+<article id="post-MAT排查问题思路"
   class="post-article article-type-post fade" itemprop="blogPost">
 
     <div class="post-card">
-        <h1 class="post-card-title">truffle与graalVM</h1>
+        <h1 class="post-card-title">MAT排查问题思路</h1>
         <div class="post-meta">
-            <time class="post-time" title="2019-03-05 01:35:38" datetime="2019-03-04T17:35:38.000Z"  itemprop="datePublished">2019-03-05</time>
+            <time class="post-time" title="2020-01-16 13:50:39" datetime="2020-01-16T05:50:39.000Z"  itemprop="datePublished">2020-01-16</time>
 
             
 
@@ -169,7 +180,15 @@
 
         </div>
         <div class="post-content" id="post-content" itemprop="postContent">
-            
+            <h3 id="MAT分析jvm内存转储文件思路及操作："><a href="#MAT分析jvm内存转储文件思路及操作：" class="headerlink" title="MAT分析jvm内存转储文件思路及操作："></a>MAT分析jvm内存转储文件思路及操作：</h3><ol>
+<li>查看leak suspect</li>
+<li>查看Histogram分布  (按retainSize降序)</li>
+<li>merge shortest path to GC root  (按retainSize降序)</li>
+<li>list objects with incoming/outcoming  (按retainSize降序)</li>
+<li>在big map上执行java collection &gt;  collections group by size  (按retainSize降序)</li>
+<li>1-5按情况交叉执行</li>
+</ol>
+
         </div>
 
         <blockquote class="post-copyright">
@@ -177,7 +196,7 @@
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2019-03-04T17:35:38.561Z" itemprop="dateUpdated">2019-03-05 01:35:38</time>
+    最后更新时间：<time datetime="2020-05-07T15:07:46.321Z" itemprop="dateUpdated">2020-05-07 23:07:46</time>
 </span><br>
 
 
@@ -203,6 +222,8 @@
 
         <div class="post-footer">
             
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/jvm/">jvm</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mat/">mat</a></li></ul>
+
 
             
 <div class="page-share-wrap">
@@ -211,7 +232,7 @@
 <div class="page-share" id="pageShare">
     <ul class="reset share-icons">
       <li>
-        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://techzealot.github.io/2019/03/05/truffle与graalVM/&title=《truffle与graalVM》 — techzealot&pic=https://techzealot.github.io/img/avatar.jpg" data-title="微博">
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://techzealot.github.io/2020/01/16/MAT排查问题思路/&title=《MAT排查问题思路》 — techzealot&pic=https://techzealot.github.io/img/avatar.jpg" data-title="微博">
           <i class="icon icon-weibo"></i>
         </a>
       </li>
@@ -221,22 +242,22 @@
         </a>
       </li>
       <li>
-        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://techzealot.github.io/2019/03/05/truffle与graalVM/&title=《truffle与graalVM》 — techzealot&source=" data-title=" QQ">
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://techzealot.github.io/2020/01/16/MAT排查问题思路/&title=《MAT排查问题思路》 — techzealot&source=" data-title=" QQ">
           <i class="icon icon-qq"></i>
         </a>
       </li>
       <li>
-        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://techzealot.github.io/2019/03/05/truffle与graalVM/" data-title=" Facebook">
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://techzealot.github.io/2020/01/16/MAT排查问题思路/" data-title=" Facebook">
           <i class="icon icon-facebook"></i>
         </a>
       </li>
       <li>
-        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《truffle与graalVM》 — techzealot&url=https://techzealot.github.io/2019/03/05/truffle与graalVM/&via=https://techzealot.github.io" data-title=" Twitter">
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《MAT排查问题思路》 — techzealot&url=https://techzealot.github.io/2020/01/16/MAT排查问题思路/&via=https://techzealot.github.io" data-title=" Twitter">
           <i class="icon icon-twitter"></i>
         </a>
       </li>
       <li>
-        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://techzealot.github.io/2019/03/05/truffle与graalVM/" data-title=" Google+">
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://techzealot.github.io/2020/01/16/MAT排查问题思路/" data-title=" Google+">
           <i class="icon icon-google-plus"></i>
         </a>
       </li>
@@ -259,18 +280,18 @@
 <nav class="post-nav flex-row flex-justify-between">
   
     <div class="waves-block waves-effect prev">
-      <a href="/2020/01/16/MAT排查问题思路/" id="post-prev" class="post-nav-link">
+      <a href="/2020/05/07/go语言变量/" id="post-prev" class="post-nav-link">
         <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
-        <h4 class="title">MAT排查问题思路</h4>
+        <h4 class="title">go语言变量</h4>
       </a>
     </div>
   
 
   
     <div class="waves-block waves-effect next">
-      <a href="/2019/02/21/TCP-IP协议详解/" id="post-next" class="post-nav-link">
+      <a href="/2019/03/05/truffle与graalVM/" id="post-next" class="post-nav-link">
         <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
-        <h4 class="title">TCP/IP协议详解</h4>
+        <h4 class="title">truffle与graalVM</h4>
       </a>
     </div>
   
@@ -365,7 +386,7 @@
 <div class="global-share" id="globalShare">
     <ul class="reset share-icons">
       <li>
-        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://techzealot.github.io/2019/03/05/truffle与graalVM/&title=《truffle与graalVM》 — techzealot&pic=https://techzealot.github.io/img/avatar.jpg" data-title="微博">
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://techzealot.github.io/2020/01/16/MAT排查问题思路/&title=《MAT排查问题思路》 — techzealot&pic=https://techzealot.github.io/img/avatar.jpg" data-title="微博">
           <i class="icon icon-weibo"></i>
         </a>
       </li>
@@ -375,22 +396,22 @@
         </a>
       </li>
       <li>
-        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://techzealot.github.io/2019/03/05/truffle与graalVM/&title=《truffle与graalVM》 — techzealot&source=" data-title=" QQ">
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://techzealot.github.io/2020/01/16/MAT排查问题思路/&title=《MAT排查问题思路》 — techzealot&source=" data-title=" QQ">
           <i class="icon icon-qq"></i>
         </a>
       </li>
       <li>
-        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://techzealot.github.io/2019/03/05/truffle与graalVM/" data-title=" Facebook">
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://techzealot.github.io/2020/01/16/MAT排查问题思路/" data-title=" Facebook">
           <i class="icon icon-facebook"></i>
         </a>
       </li>
       <li>
-        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《truffle与graalVM》 — techzealot&url=https://techzealot.github.io/2019/03/05/truffle与graalVM/&via=https://techzealot.github.io" data-title=" Twitter">
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《MAT排查问题思路》 — techzealot&url=https://techzealot.github.io/2020/01/16/MAT排查问题思路/&via=https://techzealot.github.io" data-title=" Twitter">
           <i class="icon icon-twitter"></i>
         </a>
       </li>
       <li>
-        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://techzealot.github.io/2019/03/05/truffle与graalVM/" data-title=" Google+">
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://techzealot.github.io/2020/01/16/MAT排查问题思路/" data-title=" Google+">
           <i class="icon icon-google-plus"></i>
         </a>
       </li>
@@ -401,7 +422,7 @@
 <div class="page-modal wx-share" id="wxShare">
     <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
-    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACM0lEQVR42u3a0W7CMAwFUP7/p9nrJNZyb1xNanryNEFpc5hk7NivV7zev9bn6+fXH3328w7nV16wMDAwbst4n66ja9r7T/6OvhQMDIwHMOaPPwqayReUPPfLnjEwMDDKIJhsrn0uBgYGxvx256E2TxwxMDAwJkVsW7LmR2//WotjYGDckPE/R2aTwvji/gYGBsatGO9y5cHx2sbnl11hYGBszcgD3GR4Im8P5GkfBgbGcxhJYbl2BJaD1wL0H/8HDAyMTRn5dvMRiquGJ9r9YGBg7MpYG4mYHO5HuWrb/sTAwNiakb+Rp2tJmdoeurU8DAyMnRjXHtCvdVDbIvawfMXAwNiUEaVZ44B7vol5swEDA2NvRpuo5W2AIkQuFbqHx20YGBjbMdoido5pA3ELxsDA2JXRtiqTB7fbag/76moYAwPj5oxJW3HeMFhrWBa/HhgYGFswkg/nAbQtTV+DhYGB8QTGVQMQa+2B9pXDnWBgYGzNyI/M5gnfWqJZXImBgfEYRp1XltvNE826YMbAwHgwox50KE/48i/lgrk2DAyMLRiToNluoh0dGw1bYGBg3JbxLley0bWxjLX7YGBgPIHRFq5FohYc5OVp5eLMCAYGxkaMPMgmaWIOXmsnYGBgPJmRB761MYs89WyfgoGBgZEneZNCd3HAIulvYGBgPJLRbqjoUZTHcxf8bmBgYNyK0Zam80O39srLjtswMDBuyMhDZB5w2wZAPog2ampiYGDcj/EDoOnbGboVVg0AAAAASUVORK5CYII=" alt="微信分享二维码">
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACHklEQVR42u3aS27EIBAFQN//0o6UPc7rBkcyFKvRJB5cLFD/rite9+8afXMP1vNfn//nemNhYGB8lpFvk3x+fjY/lPzdMDAwzmE8X7KjjZ+fTV6uuu/wewwMDIz4Mp0JNzEwMDBWXbjVMDEHYGBgYDwz8nLYWmQeRC7LxTEwMD7IqIZx//n5xf4GBgbGRxj30pUfweip5r4YGBhbM5KEc2a2ofeKSTB6Jb0IDAyMjRjVQDAflai2P3uHgoGBcQIj2aYXCFYLbb02JwYGxjmM+aJYdXSsehB/XP0YGBjHMN4onOVpcJ76Nn8OAwPj44xV2yTs/KIvBKkYGBibMnrpZW/jvLifBKAYGBjnMPIC2UwjszpUUU2tMTAwTmD0rrk3eL3xDgwMjL0ZeaJYLbTNp7jlSxYDA2NrRlLKz0O3XliZp8EYGBinMaodwGoImI9NzLdUMTAw9mbMbJ80D9Yex/AIMDAwjmFUQ7f5YLH30sMWJgYGxtaM6lBFXibLC2fJ7zTTVwwMjI0Y1et1ppRWLe0VsnAMDIztGNVrNE9E8+9fnBnBwMD4OOMurl4AlyexeSMTAwPjHEa+euHjqnGxBSkuBgbGxxm9S7Z61a4dthjGthgYGFszqiHdzFDFqiQWAwMDoxoO5m2DavMy+jUMDAyMfJB0+giamTcGBsYBjHw4tTouVk1lcxgGBsY5jPnGQG+z6khH3oTAwMDYiPEDLXn6CENITqMAAAAASUVORK5CYII=" alt="微信分享二维码">
 </div>
 
 
