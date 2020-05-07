@@ -21,18 +21,18 @@
     
     
     <meta name="keywords" content="go">
-    <meta name="description" content="1. 常量1234567891011121314const (	d = 1	e = 2)func consts() &amp;#123;	const filename = &quot;abc.txt&quot;	//常量可以当做各种类型使用，相当于文本替换	const a, b = 3, 4	var c int	//此处无需强转	c = int(math.Sqrt(a*a + b*b))	fmt.Println(c)&amp;#12">
+    <meta name="description" content="本章主要介绍了go语言的常量、枚举及iota的使用">
 <meta name="keywords" content="go">
 <meta property="og:type" content="article">
 <meta property="og:title" content="go语言常量">
 <meta property="og:url" content="https://techzealot.github.io/2020/05/07/go语言常量/index.html">
 <meta property="og:site_name" content="techzealot">
-<meta property="og:description" content="1. 常量1234567891011121314const (	d = 1	e = 2)func consts() &amp;#123;	const filename = &quot;abc.txt&quot;	//常量可以当做各种类型使用，相当于文本替换	const a, b = 3, 4	var c int	//此处无需强转	c = int(math.Sqrt(a*a + b*b))	fmt.Println(c)&amp;#12">
+<meta property="og:description" content="本章主要介绍了go语言的常量、枚举及iota的使用">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2020-05-07T14:59:43.159Z">
+<meta property="og:updated_time" content="2020-05-07T17:53:05.320Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="go语言常量">
-<meta name="twitter:description" content="1. 常量1234567891011121314const (	d = 1	e = 2)func consts() &amp;#123;	const filename = &quot;abc.txt&quot;	//常量可以当做各种类型使用，相当于文本替换	const a, b = 3, 4	var c int	//此处无需强转	c = int(math.Sqrt(a*a + b*b))	fmt.Println(c)&amp;#12">
+<meta name="twitter:description" content="本章主要介绍了go语言的常量、枚举及iota的使用">
     
     <link rel="shortcut icon" href="/favicon.ico">
     <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
@@ -180,8 +180,10 @@
 
         </div>
         <div class="post-content" id="post-content" itemprop="postContent">
-            <h2 id="1-常量"><a href="#1-常量" class="headerlink" title="1. 常量"></a>1. 常量</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> (</span><br><span class="line">	d = <span class="number">1</span></span><br><span class="line">	e = <span class="number">2</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">consts</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="keyword">const</span> filename = <span class="string">"abc.txt"</span></span><br><span class="line">	<span class="comment">//常量可以当做各种类型使用，相当于文本替换</span></span><br><span class="line">	<span class="keyword">const</span> a, b = <span class="number">3</span>, <span class="number">4</span></span><br><span class="line">	<span class="keyword">var</span> c <span class="keyword">int</span></span><br><span class="line">	<span class="comment">//此处无需强转</span></span><br><span class="line">	c = <span class="keyword">int</span>(math.Sqrt(a*a + b*b))</span><br><span class="line">	fmt.Println(c)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="2-枚举类型"><a href="#2-枚举类型" class="headerlink" title="2. 枚举类型"></a>2. 枚举类型</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">enums</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="comment">/*const (</span></span><br><span class="line"><span class="comment">		cpp    = 0</span></span><br><span class="line"><span class="comment">		java   = 1</span></span><br><span class="line"><span class="comment">		python = 2</span></span><br><span class="line"><span class="comment">		golang = 3</span></span><br><span class="line"><span class="comment">	)*/</span></span><br><span class="line">	<span class="keyword">const</span> (</span><br><span class="line">		cpp    = <span class="literal">iota</span> <span class="comment">//0</span></span><br><span class="line">		_             <span class="comment">//1</span></span><br><span class="line">		python        <span class="comment">// 2</span></span><br><span class="line">		golang        <span class="comment">//3</span></span><br><span class="line">	)</span><br><span class="line">	<span class="comment">//b kb mb gb tb pb</span></span><br><span class="line">	<span class="keyword">const</span> (</span><br><span class="line">		b  = <span class="number">1</span> &lt;&lt; (<span class="number">10</span> * <span class="literal">iota</span>) <span class="comment">//1 &lt;&lt; (10*0)</span></span><br><span class="line">		kb                    <span class="comment">//1 &lt;&lt; (10*1)</span></span><br><span class="line">		mb                    <span class="comment">//1 &lt;&lt; (10*2)</span></span><br><span class="line">		gb                    <span class="comment">//1 &lt;&lt; (10*3)</span></span><br><span class="line">		tb                    <span class="comment">//1 &lt;&lt; (10*4)</span></span><br><span class="line">		pb                    <span class="comment">//1 &lt;&lt; (10*5)</span></span><br><span class="line">	)</span><br><span class="line">	fmt.Println(b, kb, mb, gb, tb, pb) <span class="comment">//1 1024 1048576 1073741824 1099511627776 1125899906842624</span></span><br><span class="line"></span><br><span class="line">	fmt.Println(cpp, python, golang) <span class="comment">//0 2 3</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+            <p><strong>本章主要介绍了go语言的常量、枚举及iota的使用</strong></p>
+<a id="more"></a>
+<h2 id="1-常量"><a href="#1-常量" class="headerlink" title="1. 常量"></a>1. 常量</h2><figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> (</span><br><span class="line">	d = <span class="number">1</span></span><br><span class="line">	e = <span class="number">2</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">consts</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="keyword">const</span> filename = <span class="string">"abc.txt"</span></span><br><span class="line">	<span class="comment">//常量可以当做各种类型使用，相当于文本替换</span></span><br><span class="line">	<span class="keyword">const</span> a, b = <span class="number">3</span>, <span class="number">4</span></span><br><span class="line">	<span class="keyword">var</span> c <span class="keyword">int</span></span><br><span class="line">	<span class="comment">//此处无需强转</span></span><br><span class="line">	c = <span class="keyword">int</span>(math.Sqrt(a*a + b*b))</span><br><span class="line">	fmt.Println(c)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="2-枚举类型"><a href="#2-枚举类型" class="headerlink" title="2. 枚举类型"></a>2. 枚举类型</h2><figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">enums</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="comment">/*const (</span></span><br><span class="line"><span class="comment">		cpp    = 0</span></span><br><span class="line"><span class="comment">		java   = 1</span></span><br><span class="line"><span class="comment">		python = 2</span></span><br><span class="line"><span class="comment">		golang = 3</span></span><br><span class="line"><span class="comment">	)*/</span></span><br><span class="line">	<span class="keyword">const</span> (</span><br><span class="line">		cpp    = <span class="literal">iota</span> <span class="comment">//0</span></span><br><span class="line">		_             <span class="comment">//1</span></span><br><span class="line">		python        <span class="comment">// 2</span></span><br><span class="line">		golang        <span class="comment">//3</span></span><br><span class="line">	)</span><br><span class="line">	<span class="comment">//b kb mb gb tb pb</span></span><br><span class="line">	<span class="keyword">const</span> (</span><br><span class="line">		b  = <span class="number">1</span> &lt;&lt; (<span class="number">10</span> * <span class="literal">iota</span>) <span class="comment">//1 &lt;&lt; (10*0)</span></span><br><span class="line">		kb                    <span class="comment">//1 &lt;&lt; (10*1)</span></span><br><span class="line">		mb                    <span class="comment">//1 &lt;&lt; (10*2)</span></span><br><span class="line">		gb                    <span class="comment">//1 &lt;&lt; (10*3)</span></span><br><span class="line">		tb                    <span class="comment">//1 &lt;&lt; (10*4)</span></span><br><span class="line">		pb                    <span class="comment">//1 &lt;&lt; (10*5)</span></span><br><span class="line">	)</span><br><span class="line">	fmt.Println(b, kb, mb, gb, tb, pb) <span class="comment">//1 1024 1048576 1073741824 1099511627776 1125899906842624</span></span><br><span class="line"></span><br><span class="line">	fmt.Println(cpp, python, golang) <span class="comment">//0 2 3</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p><strong>iota 自增量种子 可以参与运算</strong></p>
 
         </div>
@@ -191,7 +193,7 @@
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2020-05-07T14:59:43.159Z" itemprop="dateUpdated">2020-05-07 22:59:43</time>
+    最后更新时间：<time datetime="2020-05-07T17:53:05.320Z" itemprop="dateUpdated">2020-05-08 01:53:05</time>
 </span><br>
 
 
@@ -237,7 +239,7 @@
         </a>
       </li>
       <li>
-        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://techzealot.github.io/2020/05/07/go语言常量/&title=《go语言常量》 — techzealot&source=" data-title=" QQ">
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://techzealot.github.io/2020/05/07/go语言常量/&title=《go语言常量》 — techzealot&source=本章主要介绍了go语言的常量、枚举及iota的使用" data-title=" QQ">
           <i class="icon icon-qq"></i>
         </a>
       </li>
@@ -391,7 +393,7 @@
         </a>
       </li>
       <li>
-        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://techzealot.github.io/2020/05/07/go语言常量/&title=《go语言常量》 — techzealot&source=" data-title=" QQ">
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://techzealot.github.io/2020/05/07/go语言常量/&title=《go语言常量》 — techzealot&source=本章主要介绍了go语言的常量、枚举及iota的使用" data-title=" QQ">
           <i class="icon icon-qq"></i>
         </a>
       </li>

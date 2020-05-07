@@ -21,18 +21,18 @@
     
     
     <meta name="keywords" content="go">
-    <meta name="description" content="1. 变量定义1.1 局部变量123456var a int =3var a,b int =3,4//类型推断var a,b,c,d = 3,4,true,&quot;abc&quot;// := 定义并初始化 推荐使用a,b,c,d := 3,4,true,&quot;abc&quot; 1.2 包内变量123456789//包内部变量必须使用var定义，无全局变量var aa = 1// () 可以省略多个varvar (	bb =">
+    <meta name="description" content="本章主要介绍了变量的定义及使用，基本数据类型，类型转换">
 <meta name="keywords" content="go">
 <meta property="og:type" content="article">
 <meta property="og:title" content="go语言变量">
 <meta property="og:url" content="https://techzealot.github.io/2020/05/07/go语言变量/index.html">
 <meta property="og:site_name" content="techzealot">
-<meta property="og:description" content="1. 变量定义1.1 局部变量123456var a int =3var a,b int =3,4//类型推断var a,b,c,d = 3,4,true,&quot;abc&quot;// := 定义并初始化 推荐使用a,b,c,d := 3,4,true,&quot;abc&quot; 1.2 包内变量123456789//包内部变量必须使用var定义，无全局变量var aa = 1// () 可以省略多个varvar (	bb =">
+<meta property="og:description" content="本章主要介绍了变量的定义及使用，基本数据类型，类型转换">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2020-05-07T14:40:51.864Z">
+<meta property="og:updated_time" content="2020-05-07T17:52:56.775Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="go语言变量">
-<meta name="twitter:description" content="1. 变量定义1.1 局部变量123456var a int =3var a,b int =3,4//类型推断var a,b,c,d = 3,4,true,&quot;abc&quot;// := 定义并初始化 推荐使用a,b,c,d := 3,4,true,&quot;abc&quot; 1.2 包内变量123456789//包内部变量必须使用var定义，无全局变量var aa = 1// () 可以省略多个varvar (	bb =">
+<meta name="twitter:description" content="本章主要介绍了变量的定义及使用，基本数据类型，类型转换">
     
     <link rel="shortcut icon" href="/favicon.ico">
     <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
@@ -180,10 +180,12 @@
 
         </div>
         <div class="post-content" id="post-content" itemprop="postContent">
-            <h2 id="1-变量定义"><a href="#1-变量定义" class="headerlink" title="1. 变量定义"></a>1. 变量定义</h2><h3 id="1-1-局部变量"><a href="#1-1-局部变量" class="headerlink" title="1.1 局部变量"></a>1.1 局部变量</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a <span class="keyword">int</span> =<span class="number">3</span></span><br><span class="line"><span class="keyword">var</span> a,b <span class="keyword">int</span> =<span class="number">3</span>,<span class="number">4</span></span><br><span class="line"><span class="comment">//类型推断</span></span><br><span class="line"><span class="keyword">var</span> a,b,c,d = <span class="number">3</span>,<span class="number">4</span>,<span class="literal">true</span>,<span class="string">"abc"</span></span><br><span class="line"><span class="comment">// := 定义并初始化 推荐使用</span></span><br><span class="line">a,b,c,d := <span class="number">3</span>,<span class="number">4</span>,<span class="literal">true</span>,<span class="string">"abc"</span></span><br></pre></td></tr></table></figure>
-<h3 id="1-2-包内变量"><a href="#1-2-包内变量" class="headerlink" title="1.2 包内变量"></a>1.2 包内变量</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//包内部变量必须使用var定义，无全局变量</span></span><br><span class="line"><span class="keyword">var</span> aa = <span class="number">1</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// () 可以省略多个var</span></span><br><span class="line"><span class="keyword">var</span> (</span><br><span class="line">	bb = <span class="number">2</span></span><br><span class="line">	cc = <span class="number">3</span></span><br><span class="line">	dd = <span class="number">4</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
-<h3 id="1-3-复数使用"><a href="#1-3-复数使用" class="headerlink" title="1.3 复数使用"></a>1.3 复数使用</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//验证欧拉公式</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">euler</span><span class="params">()</span></span> &#123;</span><br><span class="line"></span><br><span class="line">	c := <span class="number">3</span> + <span class="number">4i</span></span><br><span class="line"></span><br><span class="line">	fmt.Println(cmplx.Abs(c))</span><br><span class="line"></span><br><span class="line">	eu := cmplx.Pow(math.E, <span class="number">1i</span>*math.Pi) + <span class="number">1</span></span><br><span class="line">	fmt.Println(eu)</span><br><span class="line"></span><br><span class="line">	eu = cmplx.Exp(<span class="number">1i</span>*math.Pi) + <span class="number">1</span></span><br><span class="line">	fmt.Printf(<span class="string">"%3f \n"</span>, eu)</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="2-类型转换必须显式声明"><a href="#2-类型转换必须显式声明" class="headerlink" title="2. 类型转换必须显式声明"></a>2. 类型转换必须显式声明</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//类型转换采用 T() 形式</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">triangle</span><span class="params">()</span></span> &#123;</span><br><span class="line">	a, b := <span class="number">3</span>, <span class="number">4</span></span><br><span class="line">	<span class="keyword">var</span> c <span class="keyword">int</span></span><br><span class="line">	c = <span class="keyword">int</span>(math.Sqrt(<span class="keyword">float64</span>(a*a + b*b)))</span><br><span class="line">	fmt.Println(c)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+            <p><strong>本章主要介绍了变量的定义及使用，基本数据类型，类型转换</strong></p>
+<a id="more"></a>
+<h2 id="1-变量定义"><a href="#1-变量定义" class="headerlink" title="1. 变量定义"></a>1. 变量定义</h2><h3 id="1-1-局部变量"><a href="#1-1-局部变量" class="headerlink" title="1.1 局部变量"></a>1.1 局部变量</h3><figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> a <span class="keyword">int</span> =<span class="number">3</span></span><br><span class="line"><span class="keyword">var</span> a,b <span class="keyword">int</span> =<span class="number">3</span>,<span class="number">4</span></span><br><span class="line"><span class="comment">//类型推断</span></span><br><span class="line"><span class="keyword">var</span> a,b,c,d = <span class="number">3</span>,<span class="number">4</span>,<span class="literal">true</span>,<span class="string">"abc"</span></span><br><span class="line"><span class="comment">// := 定义并初始化 推荐使用</span></span><br><span class="line">a,b,c,d := <span class="number">3</span>,<span class="number">4</span>,<span class="literal">true</span>,<span class="string">"abc"</span></span><br></pre></td></tr></table></figure>
+<h3 id="1-2-包内变量"><a href="#1-2-包内变量" class="headerlink" title="1.2 包内变量"></a>1.2 包内变量</h3><figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="comment">//包内部变量必须使用var定义，无全局变量</span></span><br><span class="line"><span class="keyword">var</span> aa = <span class="number">1</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// () 可以省略多个var</span></span><br><span class="line"><span class="keyword">var</span> (</span><br><span class="line">	bb = <span class="number">2</span></span><br><span class="line">	cc = <span class="number">3</span></span><br><span class="line">	dd = <span class="number">4</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<h3 id="1-3-复数使用"><a href="#1-3-复数使用" class="headerlink" title="1.3 复数使用"></a>1.3 复数使用</h3><figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="comment">//验证欧拉公式</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">euler</span><span class="params">()</span></span> &#123;</span><br><span class="line"></span><br><span class="line">	c := <span class="number">3</span> + <span class="number">4i</span></span><br><span class="line"></span><br><span class="line">	fmt.Println(cmplx.Abs(c))</span><br><span class="line"></span><br><span class="line">	eu := cmplx.Pow(math.E, <span class="number">1i</span>*math.Pi) + <span class="number">1</span></span><br><span class="line">	fmt.Println(eu)</span><br><span class="line"></span><br><span class="line">	eu = cmplx.Exp(<span class="number">1i</span>*math.Pi) + <span class="number">1</span></span><br><span class="line">	fmt.Printf(<span class="string">"%3f \n"</span>, eu)</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="2-类型转换必须显式声明"><a href="#2-类型转换必须显式声明" class="headerlink" title="2. 类型转换必须显式声明"></a>2. 类型转换必须显式声明</h2><figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="comment">//类型转换采用 T() 形式</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">triangle</span><span class="params">()</span></span> &#123;</span><br><span class="line">	a, b := <span class="number">3</span>, <span class="number">4</span></span><br><span class="line">	<span class="keyword">var</span> c <span class="keyword">int</span></span><br><span class="line">	c = <span class="keyword">int</span>(math.Sqrt(<span class="keyword">float64</span>(a*a + b*b)))</span><br><span class="line">	fmt.Println(c)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h2 id="3-基本数据类型"><a href="#3-基本数据类型" class="headerlink" title="3. 基本数据类型"></a>3. 基本数据类型</h2><h3 id="整型"><a href="#整型" class="headerlink" title="整型"></a>整型</h3><table>
 <thead>
 <tr>
@@ -250,7 +252,7 @@
 </table>
 <h3 id="浮点型"><a href="#浮点型" class="headerlink" title="浮点型"></a>浮点型</h3><p>float32和float64</p>
 <h3 id="复数"><a href="#复数" class="headerlink" title="复数"></a>复数</h3><p>complex64和complex128</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">c := <span class="number">3</span> + <span class="number">4i</span></span><br><span class="line"></span><br><span class="line">fmt.Println(cmplx.Abs(c))</span><br></pre></td></tr></table></figure>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line">c := <span class="number">3</span> + <span class="number">4i</span></span><br><span class="line"></span><br><span class="line">fmt.Println(cmplx.Abs(c))</span><br></pre></td></tr></table></figure>
 <h3 id="布尔值"><a href="#布尔值" class="headerlink" title="布尔值"></a>布尔值</h3><p>Go语言中以<code>bool</code>类型进行声明布尔型数据，布尔型数据只有<code>true（真）</code>和<code>false（假）</code>两个值。</p>
 <p><strong>注意：</strong></p>
 <ol>
@@ -260,7 +262,7 @@
 </ol>
 <h3 id="字符串"><a href="#字符串" class="headerlink" title="字符串"></a>字符串</h3><p>Go语言中的字符串以原生数据类型出现，使用字符串就像使用其他原生数据类型（int、bool、float32、float64 等）一样。 Go 语言里的字符串的内部实现使用<code>UTF-8</code>编码。 字符串的值为<code>双引号(&quot;)</code>中的内容，可以在Go语言的源码中直接添加非ASCII码字符</p>
 <p>Go语言中要定义一个多行字符串时，就必须使用<code>反引号</code>字符</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">str := <span class="string">"hello world"</span></span><br><span class="line">ch := <span class="string">"中文"</span></span><br><span class="line"><span class="keyword">const</span> str = <span class="string">` 第一行</span></span><br><span class="line"><span class="string">第二行</span></span><br><span class="line"><span class="string">第三行</span></span><br><span class="line"><span class="string">\r\n</span></span><br><span class="line"><span class="string">`</span></span><br><span class="line">fmt.Println(str)</span><br></pre></td></tr></table></figure>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line">str := <span class="string">"hello world"</span></span><br><span class="line">ch := <span class="string">"中文"</span></span><br><span class="line"><span class="keyword">const</span> str = <span class="string">` 第一行</span></span><br><span class="line"><span class="string">第二行</span></span><br><span class="line"><span class="string">第三行</span></span><br><span class="line"><span class="string">\r\n</span></span><br><span class="line"><span class="string">`</span></span><br><span class="line">fmt.Println(str)</span><br></pre></td></tr></table></figure>
 <h3 id="byte和rune类型"><a href="#byte和rune类型" class="headerlink" title="byte和rune类型"></a>byte和rune类型</h3><p>Go 语言的字符有以下两种：</p>
 <ol>
 <li><code>uint8</code>类型，或者叫 byte 型，代表了<code>ASCII码</code>的一个字符。</li>
@@ -275,7 +277,7 @@
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2020-05-07T14:40:51.864Z" itemprop="dateUpdated">2020-05-07 22:40:51</time>
+    最后更新时间：<time datetime="2020-05-07T17:52:56.775Z" itemprop="dateUpdated">2020-05-08 01:52:56</time>
 </span><br>
 
 
@@ -321,7 +323,7 @@
         </a>
       </li>
       <li>
-        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://techzealot.github.io/2020/05/07/go语言变量/&title=《go语言变量》 — techzealot&source=" data-title=" QQ">
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://techzealot.github.io/2020/05/07/go语言变量/&title=《go语言变量》 — techzealot&source=本章主要介绍了变量的定义及使用，基本数据类型，类型转换" data-title=" QQ">
           <i class="icon icon-qq"></i>
         </a>
       </li>
@@ -475,7 +477,7 @@
         </a>
       </li>
       <li>
-        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://techzealot.github.io/2020/05/07/go语言变量/&title=《go语言变量》 — techzealot&source=" data-title=" QQ">
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://techzealot.github.io/2020/05/07/go语言变量/&title=《go语言变量》 — techzealot&source=本章主要介绍了变量的定义及使用，基本数据类型，类型转换" data-title=" QQ">
           <i class="icon icon-qq"></i>
         </a>
       </li>
