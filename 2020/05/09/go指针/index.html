@@ -14,25 +14,25 @@
     
     
     
-    <title>MAT排查问题思路 | techzealot | techzealot&#39;s personal blogs</title>
+    <title>(5)go指针 | techzealot | techzealot&#39;s personal blogs</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     
     <meta name="theme-color" content="#3F51B5">
     
     
-    <meta name="keywords" content="jvm,mat">
-    <meta name="description" content="MAT分析jvm内存转储文件思路及操作： 查看leak suspect 查看Histogram分布  (按retainSize降序) merge shortest path to GC root  (按retainSize降序) list objects with incoming/outcoming  (按retainSize降序) 在big map上执行java collection &amp;gt;">
-<meta name="keywords" content="jvm,mat">
+    <meta name="keywords" content="go">
+    <meta name="description" content="本章主要介绍go语言指针用法及注意事项">
+<meta name="keywords" content="go">
 <meta property="og:type" content="article">
-<meta property="og:title" content="MAT排查问题思路">
-<meta property="og:url" content="https://techzealot.github.io/2020/01/16/MAT排查问题思路/index.html">
+<meta property="og:title" content="(5)go指针">
+<meta property="og:url" content="https://techzealot.github.io/2020/05/09/go指针/index.html">
 <meta property="og:site_name" content="techzealot">
-<meta property="og:description" content="MAT分析jvm内存转储文件思路及操作： 查看leak suspect 查看Histogram分布  (按retainSize降序) merge shortest path to GC root  (按retainSize降序) list objects with incoming/outcoming  (按retainSize降序) 在big map上执行java collection &amp;gt;">
+<meta property="og:description" content="本章主要介绍go语言指针用法及注意事项">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2020-05-07T15:07:46.321Z">
+<meta property="og:updated_time" content="2020-05-08T17:36:23.469Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="MAT排查问题思路">
-<meta name="twitter:description" content="MAT分析jvm内存转储文件思路及操作： 查看leak suspect 查看Histogram分布  (按retainSize降序) merge shortest path to GC root  (按retainSize降序) list objects with incoming/outcoming  (按retainSize降序) 在big map上执行java collection &amp;gt;">
+<meta name="twitter:title" content="(5)go指针">
+<meta name="twitter:description" content="本章主要介绍go语言指针用法及注意事项">
     
     <link rel="shortcut icon" href="/favicon.ico">
     <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
@@ -111,7 +111,7 @@
         <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
           <i class="icon icon-lg icon-navicon"></i>
         </a>
-        <div class="flex-col header-title ellipsis">MAT排查问题思路</div>
+        <div class="flex-col header-title ellipsis">(5)go指针</div>
         
         <div class="search-wrap" id="search-wrap">
             <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
@@ -133,11 +133,11 @@
 <header class="content-header post-header">
 
     <div class="container fade-scale">
-        <h1 class="title">MAT排查问题思路</h1>
+        <h1 class="title">(5)go指针</h1>
         <h5 class="subtitle">
             
-                <time datetime="2020-01-16T05:50:39.000Z" itemprop="datePublished" class="page-time">
-  2020-01-16
+                <time datetime="2020-05-08T16:45:14.000Z" itemprop="datePublished" class="page-time">
+  2020-05-09
 </time>
 
 
@@ -156,18 +156,18 @@
     <aside class="post-widget">
         <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
             <h4>TOC</h4>
-            <ol class="post-toc"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#MAT分析jvm内存转储文件思路及操作："><span class="post-toc-number">1.</span> <span class="post-toc-text">MAT分析jvm内存转储文件思路及操作：</span></a></li></ol>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#go语言指针不能参与运算，但可以改变指向"><span class="post-toc-number">1.</span> <span class="post-toc-text">go语言指针不能参与运算，但可以改变指向</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#go语言函数参数是值传递"><span class="post-toc-number">2.</span> <span class="post-toc-text">go语言函数参数是值传递</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#go语言支持多重赋值"><span class="post-toc-number">3.</span> <span class="post-toc-text">go语言支持多重赋值</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#交换函数实现"><span class="post-toc-number">4.</span> <span class="post-toc-text">交换函数实现</span></a></li></ol>
         </nav>
     </aside>
 
 
-<article id="post-MAT排查问题思路"
+<article id="post-go指针"
   class="post-article article-type-post fade" itemprop="blogPost">
 
     <div class="post-card">
-        <h1 class="post-card-title">MAT排查问题思路</h1>
+        <h1 class="post-card-title">(5)go指针</h1>
         <div class="post-meta">
-            <time class="post-time" title="2020-01-16 13:50:39" datetime="2020-01-16T05:50:39.000Z"  itemprop="datePublished">2020-01-16</time>
+            <time class="post-time" title="2020-05-09 00:45:14" datetime="2020-05-08T16:45:14.000Z"  itemprop="datePublished">2020-05-09</time>
 
             
 
@@ -180,14 +180,16 @@
 
         </div>
         <div class="post-content" id="post-content" itemprop="postContent">
-            <h3 id="MAT分析jvm内存转储文件思路及操作："><a href="#MAT分析jvm内存转储文件思路及操作：" class="headerlink" title="MAT分析jvm内存转储文件思路及操作："></a>MAT分析jvm内存转储文件思路及操作：</h3><ol>
-<li>查看leak suspect</li>
-<li>查看Histogram分布  (按retainSize降序)</li>
-<li>merge shortest path to GC root  (按retainSize降序)</li>
-<li>list objects with incoming/outcoming  (按retainSize降序)</li>
-<li>在big map上执行java collection &gt;  collections group by size  (按retainSize降序)</li>
-<li>1-5按情况交叉执行</li>
-</ol>
+            <p>本章主要介绍go语言指针用法及注意事项</p>
+<a id="more"></a>
+<h3 id="go语言指针不能参与运算，但可以改变指向"><a href="#go语言指针不能参与运算，但可以改变指向" class="headerlink" title="go语言指针不能参与运算，但可以改变指向"></a>go语言指针不能参与运算，但可以改变指向</h3><figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="keyword">var</span> a <span class="keyword">int</span> = <span class="number">2</span></span><br><span class="line">	<span class="keyword">var</span> pa *<span class="keyword">int</span> = &amp;a</span><br><span class="line">	*pa = <span class="number">3</span></span><br><span class="line">	fmt.Println(a, pa, *pa, &amp;pa, &amp;a) <span class="comment">//3 0xc00000a0e8 3 0xc000006028 0xc00000a0e8</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="go语言函数参数是值传递"><a href="#go语言函数参数是值传递" class="headerlink" title="go语言函数参数是值传递"></a>go语言函数参数是值传递</h3><p>go语言只有值传递一种形式：</p>
+<p>默认通过<strong>数据拷贝</strong>进行值传递，可通过传递指针实现传递引用的效果</p>
+<p>因此在设计对象时就应该考虑传递形式</p>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">passByValue</span><span class="params">(a <span class="keyword">int</span>)</span></span> &#123;</span><br><span class="line">	a++</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">passByRef</span><span class="params">(a *<span class="keyword">int</span>)</span></span> &#123;</span><br><span class="line">	*a++</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	a := <span class="number">2</span></span><br><span class="line">	passByValue(a)</span><br><span class="line">	fmt.Println(a) <span class="comment">//2</span></span><br><span class="line">	passByRef(&amp;a)</span><br><span class="line">	fmt.Println(a) <span class="comment">//3</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="go语言支持多重赋值"><a href="#go语言支持多重赋值" class="headerlink" title="go语言支持多重赋值"></a>go语言支持多重赋值</h3><p>两个变量交换不需要引入第三个参数</p>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line">a,b <span class="keyword">int</span>=<span class="number">3</span>,<span class="number">4</span></span><br><span class="line">a,b=b,a</span><br></pre></td></tr></table></figure>
+<h3 id="交换函数实现"><a href="#交换函数实现" class="headerlink" title="交换函数实现"></a>交换函数实现</h3><figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="comment">//推荐做法</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">swapNoSideEffect</span><span class="params">(a, b <span class="keyword">int</span>)</span> <span class="params">(<span class="keyword">int</span>, <span class="keyword">int</span>)</span></span> &#123;</span><br><span class="line">	<span class="keyword">return</span> b, a</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">swap</span><span class="params">(a, b *<span class="keyword">int</span>)</span></span> &#123;</span><br><span class="line">	*a, *b = *b, *a</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	c, d := <span class="number">5</span>, <span class="number">6</span></span><br><span class="line">	swap(&amp;c, &amp;d)</span><br><span class="line">	fmt.Println(c, d) <span class="comment">//6,5</span></span><br><span class="line"></span><br><span class="line">	c, d = swapNoSideEffect(c, d)</span><br><span class="line">	fmt.Println(c, d) <span class="comment">//5,6</span></span><br><span class="line">	<span class="keyword">var</span> e <span class="keyword">int</span></span><br><span class="line">	c, d, e = d, c, d/c</span><br><span class="line">	fmt.Println(c, d, e) <span class="comment">//6 5 1 将右侧变量先运算替换，然后一次赋多值</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
         </div>
 
@@ -196,7 +198,7 @@
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2020-05-07T15:07:46.321Z" itemprop="dateUpdated">2020-05-07 23:07:46</time>
+    最后更新时间：<time datetime="2020-05-08T17:36:23.469Z" itemprop="dateUpdated">2020-05-09 01:36:23</time>
 </span><br>
 
 
@@ -222,7 +224,7 @@
 
         <div class="post-footer">
             
-	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/jvm/">jvm</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mat/">mat</a></li></ul>
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/go/">go</a></li></ul>
 
 
             
@@ -232,7 +234,7 @@
 <div class="page-share" id="pageShare">
     <ul class="reset share-icons">
       <li>
-        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://techzealot.github.io/2020/01/16/MAT排查问题思路/&title=《MAT排查问题思路》 — techzealot&pic=https://techzealot.github.io/img/avatar.jpg" data-title="微博">
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://techzealot.github.io/2020/05/09/go指针/&title=《(5)go指针》 — techzealot&pic=https://techzealot.github.io/img/avatar.jpg" data-title="微博">
           <i class="icon icon-weibo"></i>
         </a>
       </li>
@@ -242,22 +244,22 @@
         </a>
       </li>
       <li>
-        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://techzealot.github.io/2020/01/16/MAT排查问题思路/&title=《MAT排查问题思路》 — techzealot&source=" data-title=" QQ">
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://techzealot.github.io/2020/05/09/go指针/&title=《(5)go指针》 — techzealot&source=本章主要介绍go语言指针用法及注意事项" data-title=" QQ">
           <i class="icon icon-qq"></i>
         </a>
       </li>
       <li>
-        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://techzealot.github.io/2020/01/16/MAT排查问题思路/" data-title=" Facebook">
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://techzealot.github.io/2020/05/09/go指针/" data-title=" Facebook">
           <i class="icon icon-facebook"></i>
         </a>
       </li>
       <li>
-        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《MAT排查问题思路》 — techzealot&url=https://techzealot.github.io/2020/01/16/MAT排查问题思路/&via=https://techzealot.github.io" data-title=" Twitter">
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《(5)go指针》 — techzealot&url=https://techzealot.github.io/2020/05/09/go指针/&via=https://techzealot.github.io" data-title=" Twitter">
           <i class="icon icon-twitter"></i>
         </a>
       </li>
       <li>
-        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://techzealot.github.io/2020/01/16/MAT排查问题思路/" data-title=" Google+">
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://techzealot.github.io/2020/05/09/go指针/" data-title=" Google+">
           <i class="icon icon-google-plus"></i>
         </a>
       </li>
@@ -280,18 +282,18 @@
 <nav class="post-nav flex-row flex-justify-between">
   
     <div class="waves-block waves-effect prev">
-      <a href="/2020/05/07/go语言变量/" id="post-prev" class="post-nav-link">
+      <a href="/2020/05/09/go数组/" id="post-prev" class="post-nav-link">
         <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
-        <h4 class="title">(1)go语言变量</h4>
+        <h4 class="title">(6)go数组</h4>
       </a>
     </div>
   
 
   
     <div class="waves-block waves-effect next">
-      <a href="/2019/03/05/truffle与graalVM/" id="post-next" class="post-nav-link">
+      <a href="/2020/05/08/go函数/" id="post-next" class="post-nav-link">
         <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
-        <h4 class="title">truffle与graalVM</h4>
+        <h4 class="title">(4)go函数</h4>
       </a>
     </div>
   
@@ -386,7 +388,7 @@
 <div class="global-share" id="globalShare">
     <ul class="reset share-icons">
       <li>
-        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://techzealot.github.io/2020/01/16/MAT排查问题思路/&title=《MAT排查问题思路》 — techzealot&pic=https://techzealot.github.io/img/avatar.jpg" data-title="微博">
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://techzealot.github.io/2020/05/09/go指针/&title=《(5)go指针》 — techzealot&pic=https://techzealot.github.io/img/avatar.jpg" data-title="微博">
           <i class="icon icon-weibo"></i>
         </a>
       </li>
@@ -396,22 +398,22 @@
         </a>
       </li>
       <li>
-        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://techzealot.github.io/2020/01/16/MAT排查问题思路/&title=《MAT排查问题思路》 — techzealot&source=" data-title=" QQ">
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://techzealot.github.io/2020/05/09/go指针/&title=《(5)go指针》 — techzealot&source=本章主要介绍go语言指针用法及注意事项" data-title=" QQ">
           <i class="icon icon-qq"></i>
         </a>
       </li>
       <li>
-        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://techzealot.github.io/2020/01/16/MAT排查问题思路/" data-title=" Facebook">
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://techzealot.github.io/2020/05/09/go指针/" data-title=" Facebook">
           <i class="icon icon-facebook"></i>
         </a>
       </li>
       <li>
-        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《MAT排查问题思路》 — techzealot&url=https://techzealot.github.io/2020/01/16/MAT排查问题思路/&via=https://techzealot.github.io" data-title=" Twitter">
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《(5)go指针》 — techzealot&url=https://techzealot.github.io/2020/05/09/go指针/&via=https://techzealot.github.io" data-title=" Twitter">
           <i class="icon icon-twitter"></i>
         </a>
       </li>
       <li>
-        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://techzealot.github.io/2020/01/16/MAT排查问题思路/" data-title=" Google+">
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://techzealot.github.io/2020/05/09/go指针/" data-title=" Google+">
           <i class="icon icon-google-plus"></i>
         </a>
       </li>
@@ -422,7 +424,7 @@
 <div class="page-modal wx-share" id="wxShare">
     <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
-    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACHklEQVR42u3aS27EIBAFQN//0o6UPc7rBkcyFKvRJB5cLFD/rite9+8afXMP1vNfn//nemNhYGB8lpFvk3x+fjY/lPzdMDAwzmE8X7KjjZ+fTV6uuu/wewwMDIz4Mp0JNzEwMDBWXbjVMDEHYGBgYDwz8nLYWmQeRC7LxTEwMD7IqIZx//n5xf4GBgbGRxj30pUfweip5r4YGBhbM5KEc2a2ofeKSTB6Jb0IDAyMjRjVQDAflai2P3uHgoGBcQIj2aYXCFYLbb02JwYGxjmM+aJYdXSsehB/XP0YGBjHMN4onOVpcJ76Nn8OAwPj44xV2yTs/KIvBKkYGBibMnrpZW/jvLifBKAYGBjnMPIC2UwjszpUUU2tMTAwTmD0rrk3eL3xDgwMjL0ZeaJYLbTNp7jlSxYDA2NrRlLKz0O3XliZp8EYGBinMaodwGoImI9NzLdUMTAw9mbMbJ80D9Yex/AIMDAwjmFUQ7f5YLH30sMWJgYGxtaM6lBFXibLC2fJ7zTTVwwMjI0Y1et1ppRWLe0VsnAMDIztGNVrNE9E8+9fnBnBwMD4OOMurl4AlyexeSMTAwPjHEa+euHjqnGxBSkuBgbGxxm9S7Z61a4dthjGthgYGFszqiHdzFDFqiQWAwMDoxoO5m2DavMy+jUMDAyMfJB0+giamTcGBsYBjHw4tTouVk1lcxgGBsY5jPnGQG+z6khH3oTAwMDYiPEDLXn6CENITqMAAAAASUVORK5CYII=" alt="微信分享二维码">
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACHElEQVR42u3aQW7DMAwEwP7/0+m1QBB3l3ILWBqdgtiwOT4QEsmvr3i9fqz3f9qr70/+9JabFwYGxmMZr8v16Z483Pf729/RR8HAwDiAkaTCPw/l8jm/xIyBgYHxIY3OwsXAwMD4f0YSVk7CwMDAWDnEJsHNnpYU4G47i2NgYDyQkVfd///3n/Q3MDAwHsV4latNtXlYr4WFgYGxN2PlNe2dyVBFvu3DwMA4k7Fe6G8Dun5j8vzi+2FgYGzEyFuMbdlrvTHwS4QYGBjHMK5vXR+kWBnmuGFriIGB8VhGe5SdJcrZtrK9ioGBsStjVvpvYfkxtb2KgYGxN2OWQIsS2Og59agHBgbG1oxZe6BNnW0hb6WFgIGBsR+jPV4m4eZH2VkiLuqFGBgYGzGu0+7s9bMk2yZiDAyMExizw2c7bJGPms1SPAYGxjmM9uCa49fHMqLsioGBsTVjVibLh8baklz+/7CdiYGB8VjGyqZwNsjVNhuiyREMDIxNGXkpLSnMzdoAK0NmGBgYpzFmifLexsCwzYmBgXEM43pTeFcQ64W2YnIEAwPj4YxXufIRrnu3lVEzAAMDY1PGDdk6KM+1wbVPw8DAOIGxnmSTtmWbrNujMgYGxgmMvJG53vjM2fVZHAMDAyM4pubjFHVKzb8iBgYGRryBmyXxdvuIgYFxDmNWrG8TbrLhu/4HAwPjTMZd+657rybJHQMD4wDGN+6TGQY99wx6AAAAAElFTkSuQmCC" alt="微信分享二维码">
 </div>
 
 
