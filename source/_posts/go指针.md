@@ -1,5 +1,5 @@
 ---
-title: (5)go指针
+title: (5) go指针
 date: 2020-05-09 00:45:14
 tags: [go]
 ---

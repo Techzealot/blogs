@@ -1,5 +1,5 @@
 ---
-title: (6)go数组
+title: (6) go数组
 date: 2020-05-09 01:36:17
 tags: [go]
 ---

@@ -1,5 +1,5 @@
 ---
-title: (4)go函数
+title: (4) go函数
 date: 2020-05-08 00:51:42
 tags: [go]
 ---
