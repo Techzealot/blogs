@@ -29,7 +29,7 @@
 <meta property="og:site_name" content="techzealot">
 <meta property="og:description" content="本章主要介绍go语言map的定义及使用">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2020-05-11T18:01:39.691Z">
+<meta property="og:updated_time" content="2020-05-11T18:15:56.789Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="(8) go map">
 <meta name="twitter:description" content="本章主要介绍go语言map的定义及使用">
@@ -188,10 +188,11 @@
 <li>map声明的时候默认值是<strong>nil</strong> ，此时进行取值，返回的是<strong>对应类型的零值</strong></li>
 <li>两种初始化方式：map[K]V{}或make(map[K]V,cap)</li>
 <li>通过fmt打印map时，空map和nil map结果都为map[],所以断定map是空还是nil应该通过map == nil来判断</li>
-<li>未初始化的map是nil，它与一个空map基本等价，只是nil的map不允许往里面添加值。（A nil map is equivalent to an empty map except that no elements may be added）因此，map是nil时，取值是不会报错的（取不到而已），但增加值会报错。其实，还有一个区别，delete一个nil map会panic，但是delete 空map是一个空操作（并不会panic）（这个区别在最新的Go tips中已经没有了，即：delete一个nil map也不会panic）</li>
+<li>未初始化的map是nil，它与一个空map基本等价，只是nil的map不允许往里面添加值。（A nil map is equivalent to an empty map except that no elements may be added）因此，map是nil时，取值是不会报错的（取不到而已），但增加值会报错。</li>
+<li>Most operations on maps, including lookup, delete, len, and range loops, are safe to perform on a nil map reference, since it behaves like an emtpy map. But storing to a nil map cause a panic.</li>
 </ol>
 </blockquote>
-<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="comment">//1</span></span><br><span class="line">	m := <span class="keyword">map</span>[<span class="keyword">string</span>]<span class="keyword">string</span>&#123;</span><br><span class="line">		<span class="string">"name"</span>: <span class="string">"tom"</span>,</span><br><span class="line">		<span class="string">"age"</span>:  <span class="string">"20"</span>,</span><br><span class="line">	&#125;</span><br><span class="line">	fmt.Println(m) <span class="comment">//map[age:20 name:tom]</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">//2 或m2 := make(map[string]int,cap)</span></span><br><span class="line">	m2 := <span class="built_in">make</span>(<span class="keyword">map</span>[<span class="keyword">string</span>]<span class="keyword">int</span>)</span><br><span class="line">	fmt.Println(m2) <span class="comment">//map[]</span></span><br><span class="line"></span><br><span class="line">	m2[<span class="string">"a"</span>] = <span class="number">1</span></span><br><span class="line">	fmt.Println(m2)</span><br><span class="line">	<span class="comment">//3</span></span><br><span class="line">	<span class="keyword">var</span> m3 <span class="keyword">map</span>[<span class="keyword">string</span>]<span class="keyword">int</span></span><br><span class="line">	fmt.Println(m3) <span class="comment">//map[]</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">//** this will panic</span></span><br><span class="line">	m3[<span class="string">"a"</span>] = <span class="number">1</span></span><br><span class="line">    <span class="comment">//this will not panic now</span></span><br><span class="line">    <span class="built_in">delete</span>(m3, <span class="string">"test"</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="comment">//1</span></span><br><span class="line">	m := <span class="keyword">map</span>[<span class="keyword">string</span>]<span class="keyword">string</span>&#123;</span><br><span class="line">		<span class="string">"name"</span>: <span class="string">"tom"</span>,</span><br><span class="line">		<span class="string">"age"</span>:  <span class="string">"20"</span>,</span><br><span class="line">	&#125;</span><br><span class="line">	fmt.Println(m) <span class="comment">//map[age:20 name:tom]</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">//2 或m2 := make(map[string]int,cap)</span></span><br><span class="line">	m2 := <span class="built_in">make</span>(<span class="keyword">map</span>[<span class="keyword">string</span>]<span class="keyword">int</span>) <span class="comment">//map[]</span></span><br><span class="line">	fmt.Println(m2) <span class="comment">//map[]</span></span><br><span class="line"></span><br><span class="line">	m2[<span class="string">"a"</span>] = <span class="number">1</span></span><br><span class="line">	fmt.Println(m2)</span><br><span class="line">	<span class="comment">//3</span></span><br><span class="line">	<span class="keyword">var</span> m3 <span class="keyword">map</span>[<span class="keyword">string</span>]<span class="keyword">int</span> <span class="comment">//nil</span></span><br><span class="line">	fmt.Println(m3) <span class="comment">//map[]</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">//** this will panic</span></span><br><span class="line">	m3[<span class="string">"a"</span>] = <span class="number">1</span></span><br><span class="line">    <span class="comment">//this will not panic now</span></span><br><span class="line">    <span class="built_in">delete</span>(m3, <span class="string">"test"</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h3 id="map的遍历"><a href="#map的遍历" class="headerlink" title="map的遍历"></a>map的遍历</h3><blockquote>
 <p>map底层为hashmap，是无序的</p>
 <p>使用len(m)可获取元素个数</p>
@@ -202,7 +203,10 @@
 <p>v,exists=map[key]</p>
 </blockquote>
 <figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> v, ok := m[<span class="string">"test"</span>]; ok &#123;</span><br><span class="line">    fmt.Println(v, ok)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="map的删除"><a href="#map的删除" class="headerlink" title="map的删除"></a>map的删除</h3><figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="built_in">delete</span>(m,key)</span><br></pre></td></tr></table></figure>
+<h3 id="map的删除"><a href="#map的删除" class="headerlink" title="map的删除"></a>map的删除</h3><blockquote>
+<p>在删除的时候会标记该key为empty，不会回收内存</p>
+</blockquote>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="built_in">delete</span>(m,key)</span><br></pre></td></tr></table></figure>
 <h3 id="map的k-v的类型"><a href="#map的k-v的类型" class="headerlink" title="map的k,v的类型"></a>map的k,v的类型</h3><h4 id="k的类型"><a href="#k的类型" class="headerlink" title="k的类型"></a>k的类型</h4><ol>
 <li>map使用hash表，因此key必须可以比较相等</li>
 <li>除slice,map,function外均可作为key</li>
@@ -228,9 +232,10 @@
 <li>可以使用sync.Map</li>
 </ol>
 <h3 id="map的gc回收机制"><a href="#map的gc回收机制" class="headerlink" title="map的gc回收机制"></a>map的gc回收机制</h3><ol>
-<li><p>map在golang里是只增不减的一种数组结构，在删除的时候会标记说明该内存空间已经empty，不会回收</p>
+<li><p>map在golang里是只增不减的一种数组结构，在删除的时候会标记该key为empty，不会回收内存</p>
 </li>
-<li><p>delete是不会真正的把map释放的，所以要回收map还是需要设为nil</p>
+<li><p>delete是不会真正把map释放，真正释放内存的做法为：</p>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line">m =<span class="literal">nil</span> <span class="comment">//交由垃圾回收器回收</span></span><br></pre></td></tr></table></figure>
 </li>
 </ol>
 <h3 id="map实战案例：寻找最长不含重复字符的子串"><a href="#map实战案例：寻找最长不含重复字符的子串" class="headerlink" title="map实战案例：寻找最长不含重复字符的子串"></a>map实战案例：寻找最长不含重复字符的子串</h3>
@@ -241,7 +246,7 @@
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2020-05-11T18:01:39.691Z" itemprop="dateUpdated">2020-05-12 02:01:39</time>
+    最后更新时间：<time datetime="2020-05-11T18:15:56.789Z" itemprop="dateUpdated">2020-05-12 02:15:56</time>
 </span><br>
 
 
