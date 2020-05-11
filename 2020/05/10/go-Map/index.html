@@ -14,22 +14,25 @@
     
     
     
-    <title>(8) go Map | techzealot | techzealot&#39;s personal blogs</title>
+    <title>(8) go map | techzealot | techzealot&#39;s personal blogs</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     
     <meta name="theme-color" content="#3F51B5">
     
     
     <meta name="keywords" content="go">
-    <meta name="keywords" content="go">
+    <meta name="description" content="本章主要介绍go语言map的定义及使用">
+<meta name="keywords" content="go">
 <meta property="og:type" content="article">
-<meta property="og:title" content="(8) go Map">
+<meta property="og:title" content="(8) go map">
 <meta property="og:url" content="https://techzealot.github.io/2020/05/10/go-Map/index.html">
 <meta property="og:site_name" content="techzealot">
+<meta property="og:description" content="本章主要介绍go语言map的定义及使用">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2020-05-10T18:40:15.596Z">
+<meta property="og:updated_time" content="2020-05-11T18:01:39.691Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="(8) go Map">
+<meta name="twitter:title" content="(8) go map">
+<meta name="twitter:description" content="本章主要介绍go语言map的定义及使用">
     
     <link rel="shortcut icon" href="/img/favicon.ico">
     <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
@@ -108,7 +111,7 @@
         <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
           <i class="icon icon-lg icon-navicon"></i>
         </a>
-        <div class="flex-col header-title ellipsis">(8) go Map</div>
+        <div class="flex-col header-title ellipsis">(8) go map</div>
         
         <div class="search-wrap" id="search-wrap">
             <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
@@ -130,7 +133,7 @@
 <header class="content-header post-header">
 
     <div class="container fade-scale">
-        <h1 class="title">(8) go Map</h1>
+        <h1 class="title">(8) go map</h1>
         <h5 class="subtitle">
             
                 <time datetime="2020-05-10T15:17:16.000Z" itemprop="datePublished" class="page-time">
@@ -150,12 +153,19 @@
 
 <div class="container body-wrap">
     
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#map的声明和初始化"><span class="post-toc-number">1.</span> <span class="post-toc-text">map的声明和初始化</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#map的遍历"><span class="post-toc-number">2.</span> <span class="post-toc-text">map的遍历</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#map的get"><span class="post-toc-number">3.</span> <span class="post-toc-text">map的get</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#map的删除"><span class="post-toc-number">4.</span> <span class="post-toc-text">map的删除</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#map的k-v的类型"><span class="post-toc-number">5.</span> <span class="post-toc-text">map的k,v的类型</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#k的类型"><span class="post-toc-number">5.1.</span> <span class="post-toc-text">k的类型</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#类型的比较"><span class="post-toc-number">5.2.</span> <span class="post-toc-text">类型的比较</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#v的类型"><span class="post-toc-number">5.3.</span> <span class="post-toc-text">v的类型</span></a></li></ol></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#map作为函数的参数"><span class="post-toc-number">6.</span> <span class="post-toc-text">map作为函数的参数</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#map的底层数据结构"><span class="post-toc-number">7.</span> <span class="post-toc-text">map的底层数据结构</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#map的并发安全"><span class="post-toc-number">8.</span> <span class="post-toc-text">map的并发安全</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#map的gc回收机制"><span class="post-toc-number">9.</span> <span class="post-toc-text">map的gc回收机制</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#map实战案例：寻找最长不含重复字符的子串"><span class="post-toc-number">10.</span> <span class="post-toc-text">map实战案例：寻找最长不含重复字符的子串</span></a></li></ol>
+        </nav>
+    </aside>
+
 
 <article id="post-go-Map"
   class="post-article article-type-post fade" itemprop="blogPost">
 
     <div class="post-card">
-        <h1 class="post-card-title">(8) go Map</h1>
+        <h1 class="post-card-title">(8) go map</h1>
         <div class="post-meta">
             <time class="post-time" title="2020-05-10 23:17:16" datetime="2020-05-10T15:17:16.000Z"  itemprop="datePublished">2020-05-10</time>
 
@@ -170,7 +180,60 @@
 
         </div>
         <div class="post-content" id="post-content" itemprop="postContent">
-            
+            <p>本章主要介绍go语言map的定义及使用</p>
+<a id="more"></a>
+<h3 id="map的声明和初始化"><a href="#map的声明和初始化" class="headerlink" title="map的声明和初始化"></a>map的声明和初始化</h3><blockquote>
+<p>m :=map[K]V</p>
+<ol>
+<li>map声明的时候默认值是<strong>nil</strong> ，此时进行取值，返回的是<strong>对应类型的零值</strong></li>
+<li>两种初始化方式：map[K]V{}或make(map[K]V,cap)</li>
+<li>通过fmt打印map时，空map和nil map结果都为map[],所以断定map是空还是nil应该通过map == nil来判断</li>
+<li>未初始化的map是nil，它与一个空map基本等价，只是nil的map不允许往里面添加值。（A nil map is equivalent to an empty map except that no elements may be added）因此，map是nil时，取值是不会报错的（取不到而已），但增加值会报错。其实，还有一个区别，delete一个nil map会panic，但是delete 空map是一个空操作（并不会panic）（这个区别在最新的Go tips中已经没有了，即：delete一个nil map也不会panic）</li>
+</ol>
+</blockquote>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="comment">//1</span></span><br><span class="line">	m := <span class="keyword">map</span>[<span class="keyword">string</span>]<span class="keyword">string</span>&#123;</span><br><span class="line">		<span class="string">"name"</span>: <span class="string">"tom"</span>,</span><br><span class="line">		<span class="string">"age"</span>:  <span class="string">"20"</span>,</span><br><span class="line">	&#125;</span><br><span class="line">	fmt.Println(m) <span class="comment">//map[age:20 name:tom]</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">//2 或m2 := make(map[string]int,cap)</span></span><br><span class="line">	m2 := <span class="built_in">make</span>(<span class="keyword">map</span>[<span class="keyword">string</span>]<span class="keyword">int</span>)</span><br><span class="line">	fmt.Println(m2) <span class="comment">//map[]</span></span><br><span class="line"></span><br><span class="line">	m2[<span class="string">"a"</span>] = <span class="number">1</span></span><br><span class="line">	fmt.Println(m2)</span><br><span class="line">	<span class="comment">//3</span></span><br><span class="line">	<span class="keyword">var</span> m3 <span class="keyword">map</span>[<span class="keyword">string</span>]<span class="keyword">int</span></span><br><span class="line">	fmt.Println(m3) <span class="comment">//map[]</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">//** this will panic</span></span><br><span class="line">	m3[<span class="string">"a"</span>] = <span class="number">1</span></span><br><span class="line">    <span class="comment">//this will not panic now</span></span><br><span class="line">    <span class="built_in">delete</span>(m3, <span class="string">"test"</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="map的遍历"><a href="#map的遍历" class="headerlink" title="map的遍历"></a>map的遍历</h3><blockquote>
+<p>map底层为hashmap，是无序的</p>
+<p>使用len(m)可获取元素个数</p>
+</blockquote>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> k, v := <span class="keyword">range</span> m &#123;</span><br><span class="line">	fmt.Println(k, v)</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//只获取key</span></span><br><span class="line"><span class="keyword">for</span> k := <span class="keyword">range</span> m &#123;</span><br><span class="line">	fmt.Println(k)</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//只获取v</span></span><br><span class="line"><span class="keyword">for</span> _,v := <span class="keyword">range</span> m &#123;</span><br><span class="line">	fmt.Println(v)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="map的get"><a href="#map的get" class="headerlink" title="map的get"></a>map的get</h3><blockquote>
+<p>当获取不存在的key时会返回zero value</p>
+<p>v,exists=map[key]</p>
+</blockquote>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> v, ok := m[<span class="string">"test"</span>]; ok &#123;</span><br><span class="line">    fmt.Println(v, ok)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="map的删除"><a href="#map的删除" class="headerlink" title="map的删除"></a>map的删除</h3><figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="built_in">delete</span>(m,key)</span><br></pre></td></tr></table></figure>
+<h3 id="map的k-v的类型"><a href="#map的k-v的类型" class="headerlink" title="map的k,v的类型"></a>map的k,v的类型</h3><h4 id="k的类型"><a href="#k的类型" class="headerlink" title="k的类型"></a>k的类型</h4><ol>
+<li>map使用hash表，因此key必须可以比较相等</li>
+<li>除slice,map,function外均可作为key</li>
+<li>不包含slice,map,function字段的struct也可作为key</li>
+</ol>
+<h4 id="类型的比较"><a href="#类型的比较" class="headerlink" title="类型的比较"></a>类型的比较</h4><ol>
+<li><p>slice不可以 s1 ==s2,只可以与nil比较，但可以借助于reflect.DeepEqual(arr1, arr2)比较，返回true或false,此外map也可以通过reflect.DeepEqual(m1, m2)比较</p>
+</li>
+<li><p>不同结构的结构体不可以比较，但同一类型的实例值是可以比较的。</p>
+<p><strong>两个 struct完全相等， 意味着里面的所有变量的值都完全相等</strong></p>
+</li>
+</ol>
+<h4 id="v的类型"><a href="#v的类型" class="headerlink" title="v的类型"></a>v的类型</h4><ol>
+<li>可以为任意类型</li>
+</ol>
+<h3 id="map作为函数的参数"><a href="#map作为函数的参数" class="headerlink" title="map作为函数的参数"></a>map作为函数的参数</h3><blockquote>
+<p>Golang中是没有引用传递的，均为值传递。这意味着传递的是数据的拷贝。<br>那么map本身是<strong>引用类型</strong>，作为形参或返回参数的时候，传递的是<strong>地址的拷贝</strong>，<strong>扩容</strong>时也<strong>不会改变</strong>这个地址。</p>
+</blockquote>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">deleteMap</span><span class="params">(m <span class="keyword">map</span>[<span class="keyword">string</span>]<span class="keyword">string</span>)</span></span> &#123;</span><br><span class="line">	<span class="built_in">delete</span>(m, <span class="string">"name"</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="comment">//1</span></span><br><span class="line">	m := <span class="keyword">map</span>[<span class="keyword">string</span>]<span class="keyword">string</span>&#123;</span><br><span class="line">		<span class="string">"name"</span>: <span class="string">"tom"</span>,</span><br><span class="line">		<span class="string">"age"</span>:  <span class="string">"20"</span>,</span><br><span class="line">	&#125;</span><br><span class="line">	fmt.Println(m) <span class="comment">//map[age:20 name:tom]</span></span><br><span class="line">	</span><br><span class="line">	deleteMap(m)</span><br><span class="line">	fmt.Println(<span class="string">"after delete:"</span>, m) <span class="comment">//after delete: map[age:20]</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="map的底层数据结构"><a href="#map的底层数据结构" class="headerlink" title="map的底层数据结构"></a>map的底层数据结构</h3><p>todo</p>
+<h3 id="map的并发安全"><a href="#map的并发安全" class="headerlink" title="map的并发安全"></a>map的并发安全</h3><ol>
+<li>map是非并发安全的</li>
+<li>可以使用sync.Map</li>
+</ol>
+<h3 id="map的gc回收机制"><a href="#map的gc回收机制" class="headerlink" title="map的gc回收机制"></a>map的gc回收机制</h3><ol>
+<li><p>map在golang里是只增不减的一种数组结构，在删除的时候会标记说明该内存空间已经empty，不会回收</p>
+</li>
+<li><p>delete是不会真正的把map释放的，所以要回收map还是需要设为nil</p>
+</li>
+</ol>
+<h3 id="map实战案例：寻找最长不含重复字符的子串"><a href="#map实战案例：寻找最长不含重复字符的子串" class="headerlink" title="map实战案例：寻找最长不含重复字符的子串"></a>map实战案例：寻找最长不含重复字符的子串</h3>
         </div>
 
         <blockquote class="post-copyright">
@@ -178,7 +241,7 @@
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2020-05-10T18:40:15.596Z" itemprop="dateUpdated">2020-05-11 02:40:15</time>
+    最后更新时间：<time datetime="2020-05-11T18:01:39.691Z" itemprop="dateUpdated">2020-05-12 02:01:39</time>
 </span><br>
 
 
@@ -214,7 +277,7 @@
 <div class="page-share" id="pageShare">
     <ul class="reset share-icons">
       <li>
-        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://techzealot.github.io/2020/05/10/go-Map/&title=《(8) go Map》 — techzealot&pic=https://techzealot.github.io/img/avatar.jpg" data-title="微博">
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://techzealot.github.io/2020/05/10/go-Map/&title=《(8) go map》 — techzealot&pic=https://techzealot.github.io/img/avatar.jpg" data-title="微博">
           <i class="icon icon-weibo"></i>
         </a>
       </li>
@@ -224,7 +287,7 @@
         </a>
       </li>
       <li>
-        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://techzealot.github.io/2020/05/10/go-Map/&title=《(8) go Map》 — techzealot&source=" data-title=" QQ">
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://techzealot.github.io/2020/05/10/go-Map/&title=《(8) go map》 — techzealot&source=本章主要介绍go语言map的定义及使用" data-title=" QQ">
           <i class="icon icon-qq"></i>
         </a>
       </li>
@@ -234,7 +297,7 @@
         </a>
       </li>
       <li>
-        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《(8) go Map》 — techzealot&url=https://techzealot.github.io/2020/05/10/go-Map/&via=https://techzealot.github.io" data-title=" Twitter">
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《(8) go map》 — techzealot&url=https://techzealot.github.io/2020/05/10/go-Map/&via=https://techzealot.github.io" data-title=" Twitter">
           <i class="icon icon-twitter"></i>
         </a>
       </li>
@@ -368,7 +431,7 @@
 <div class="global-share" id="globalShare">
     <ul class="reset share-icons">
       <li>
-        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://techzealot.github.io/2020/05/10/go-Map/&title=《(8) go Map》 — techzealot&pic=https://techzealot.github.io/img/avatar.jpg" data-title="微博">
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://techzealot.github.io/2020/05/10/go-Map/&title=《(8) go map》 — techzealot&pic=https://techzealot.github.io/img/avatar.jpg" data-title="微博">
           <i class="icon icon-weibo"></i>
         </a>
       </li>
@@ -378,7 +441,7 @@
         </a>
       </li>
       <li>
-        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://techzealot.github.io/2020/05/10/go-Map/&title=《(8) go Map》 — techzealot&source=" data-title=" QQ">
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://techzealot.github.io/2020/05/10/go-Map/&title=《(8) go map》 — techzealot&source=本章主要介绍go语言map的定义及使用" data-title=" QQ">
           <i class="icon icon-qq"></i>
         </a>
       </li>
@@ -388,7 +451,7 @@
         </a>
       </li>
       <li>
-        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《(8) go Map》 — techzealot&url=https://techzealot.github.io/2020/05/10/go-Map/&via=https://techzealot.github.io" data-title=" Twitter">
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《(8) go map》 — techzealot&url=https://techzealot.github.io/2020/05/10/go-Map/&via=https://techzealot.github.io" data-title=" Twitter">
           <i class="icon icon-twitter"></i>
         </a>
       </li>
