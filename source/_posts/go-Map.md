@@ -15,7 +15,8 @@ tags: [go]
 > 1. map声明的时候默认值是**nil** ，此时进行取值，返回的是**对应类型的零值**
 > 2. 两种初始化方式：map[K]V{}或make(map[K]V,cap)
 > 3. 通过fmt打印map时，空map和nil map结果都为map[],所以断定map是空还是nil应该通过map == nil来判断
-> 4. 未初始化的map是nil，它与一个空map基本等价，只是nil的map不允许往里面添加值。（A nil map is equivalent to an empty map except that no elements may be added）因此，map是nil时，取值是不会报错的（取不到而已），但增加值会报错。其实，还有一个区别，delete一个nil map会panic，但是delete 空map是一个空操作（并不会panic）（这个区别在最新的Go tips中已经没有了，即：delete一个nil map也不会panic）
+> 4. 未初始化的map是nil，它与一个空map基本等价，只是nil的map不允许往里面添加值。（A nil map is equivalent to an empty map except that no elements may be added）因此，map是nil时，取值是不会报错的（取不到而已），但增加值会报错。
+> 5. Most operations on maps, including lookup, delete, len, and range loops, are safe to perform on a nil map reference, since it behaves like an emtpy map. But storing to a nil map cause a panic.
 
 ```go
 func main() {
@@ -27,13 +28,13 @@ func main() {
 	fmt.Println(m) //map[age:20 name:tom]
 
 	//2 或m2 := make(map[string]int,cap)
-	m2 := make(map[string]int)
+	m2 := make(map[string]int) //map[]
 	fmt.Println(m2) //map[]
 
 	m2["a"] = 1
 	fmt.Println(m2)
 	//3
-	var m3 map[string]int
+	var m3 map[string]int //nil
 	fmt.Println(m3) //map[]
 
 	//** this will panic
@@ -76,6 +77,8 @@ if v, ok := m["test"]; ok {
 ```
 
 ### map的删除
+
+> 在删除的时候会标记该key为empty，不会回收内存
 
 ```go
 delete(m,key)
@@ -135,8 +138,14 @@ todo
 
 ### map的gc回收机制
 
-1. map在golang里是只增不减的一种数组结构，在删除的时候会标记说明该内存空间已经empty，不会回收
+1. map在golang里是只增不减的一种数组结构，在删除的时候会标记该key为empty，不会回收内存
 
-2. delete是不会真正的把map释放的，所以要回收map还是需要设为nil
+2. delete是不会真正把map释放，真正释放内存的做法为：
+
+   ```go
+   m =nil //交由垃圾回收器回收
+   ```
+
+   
 
 ### map实战案例：寻找最长不含重复字符的子串
