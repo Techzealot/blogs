@@ -20,15 +20,19 @@
     <meta name="theme-color" content="#3F51B5">
     
     
-    <meta name="keywords" content="">
-    <meta property="og:type" content="article">
+    <meta name="keywords" content="go">
+    <meta name="description" content="本章主要介绍go语言结构体的使用及方法的定义">
+<meta name="keywords" content="go">
+<meta property="og:type" content="article">
 <meta property="og:title" content="(10) go面向对象-结构体和方法">
 <meta property="og:url" content="https://techzealot.github.io/2020/05/10/go面向对象-结构体和方法/index.html">
 <meta property="og:site_name" content="techzealot">
+<meta property="og:description" content="本章主要介绍go语言结构体的使用及方法的定义">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2020-05-10T18:41:07.653Z">
+<meta property="og:updated_time" content="2020-05-14T17:41:19.982Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="(10) go面向对象-结构体和方法">
+<meta name="twitter:description" content="本章主要介绍go语言结构体的使用及方法的定义">
     
     <link rel="shortcut icon" href="/img/favicon.ico">
     <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
@@ -149,6 +153,13 @@
 
 <div class="container body-wrap">
     
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#面向对象"><span class="post-toc-number">1.</span> <span class="post-toc-text">面向对象</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#结构的创建"><span class="post-toc-number">2.</span> <span class="post-toc-text">结构的创建</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#定义方法"><span class="post-toc-number">3.</span> <span class="post-toc-text">定义方法</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#中序遍历"><span class="post-toc-number">4.</span> <span class="post-toc-text">中序遍历</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#值接收者vs指针接收者"><span class="post-toc-number">5.</span> <span class="post-toc-text">值接收者vs指针接收者</span></a></li></ol>
+        </nav>
+    </aside>
+
 
 <article id="post-go面向对象-结构体和方法"
   class="post-article article-type-post fade" itemprop="blogPost">
@@ -169,7 +180,43 @@
 
         </div>
         <div class="post-content" id="post-content" itemprop="postContent">
-            
+            <p>本章主要介绍go语言结构体的使用及方法的定义</p>
+<a id="more"></a>
+<h3 id="面向对象"><a href="#面向对象" class="headerlink" title="面向对象"></a>面向对象</h3><blockquote>
+<ol>
+<li><p>go仅支持封装，不支持继承和多态，通过接口和组合实现面向对象</p>
+</li>
+<li><p>go只有struct，没有class，没有构造函数，但有各种灵活的构造方式</p>
+</li>
+</ol>
+</blockquote>
+<h3 id="结构的创建"><a href="#结构的创建" class="headerlink" title="结构的创建"></a>结构的创建</h3><figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">type</span> treeNode <span class="keyword">struct</span> &#123;</span><br><span class="line">	value       <span class="keyword">int</span></span><br><span class="line">	left, right *treeNode</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//返回了局部变量，变量分配由编译器决定分配在堆上还是栈上</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">createNode</span><span class="params">(value <span class="keyword">int</span>)</span> *<span class="title">treeNode</span></span> &#123;</span><br><span class="line">	<span class="keyword">return</span> &amp;treeNode&#123;value: value&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="keyword">var</span> root treeNode</span><br><span class="line"></span><br><span class="line">	fmt.Println(root) <span class="comment">//&#123;0 &lt;nil&gt; &lt;nil&gt;&#125;</span></span><br><span class="line"></span><br><span class="line">	root = treeNode&#123;value: <span class="number">3</span>&#125;</span><br><span class="line">	root.left = &amp;treeNode&#123;&#125;</span><br><span class="line">	root.right = &amp;treeNode&#123;<span class="number">5</span>, <span class="literal">nil</span>, <span class="literal">nil</span>&#125;</span><br><span class="line">	<span class="comment">//指针也可用.</span></span><br><span class="line">	root.right.left = <span class="built_in">new</span>(treeNode)</span><br><span class="line"></span><br><span class="line">	nodes := []treeNode&#123;</span><br><span class="line">		&#123;value: <span class="number">3</span>&#125;,</span><br><span class="line">		&#123;&#125;,</span><br><span class="line">		&#123;<span class="number">6</span>, <span class="literal">nil</span>, <span class="literal">nil</span>&#125;,</span><br><span class="line">	&#125;</span><br><span class="line">	fmt.Println(nodes)<span class="comment">//[&#123;3 &lt;nil&gt; &lt;nil&gt;&#125; &#123;0 &lt;nil&gt; &lt;nil&gt;&#125; &#123;6 &lt;nil&gt; &lt;nil&gt;&#125;]</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>不论地址还是结构本身都使用 . 来访问成员</p>
+</blockquote>
+<h3 id="定义方法"><a href="#定义方法" class="headerlink" title="定义方法"></a>定义方法</h3><blockquote>
+<ol>
+<li>struct的方法就是普通函数，多声明了接收者</li>
+<li>指针接收者和值接收者均可用实例去调用，由编译器根据真实情况决定传递值还是指针</li>
+<li>只有使用指针才能改变结构内部</li>
+<li>nil指针也可以调用方法</li>
+</ol>
+</blockquote>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(t T)</span> <span class="title">m</span><span class="params">()</span></span>&#123;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br><span class="line">类似于</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">m</span><span class="params">(t T)</span></span>&#123;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br><span class="line">因此<span class="keyword">struct</span> 为<span class="literal">nil</span>时仍可以调用方法</span><br></pre></td></tr></table></figure>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">type</span> treeNode <span class="keyword">struct</span> &#123;</span><br><span class="line">	value       <span class="keyword">int</span></span><br><span class="line">	left, right *treeNode</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//值接收者，值传递</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(node treeNode)</span> <span class="title">print</span><span class="params">()</span></span> &#123;</span><br><span class="line">	fmt.Print(node.value,<span class="string">" "</span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//指针接收者</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(node *treeNode)</span> <span class="title">setValue</span><span class="params">(value <span class="keyword">int</span>)</span></span> &#123;</span><br><span class="line">	node.value = value</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>nil指针不同于null，nil可以调用方法，其他语言中null只能判断是否为null</p>
+</blockquote>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(node *treeNode)</span> <span class="title">nilTest</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="keyword">if</span> node == <span class="literal">nil</span> &#123;</span><br><span class="line">		fmt.Println(<span class="string">"nil invoker"</span>)</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">//此处获取不到值，仍然会panic，但是可以调用进来</span></span><br><span class="line">	<span class="comment">//fmt.Println(node.value)</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="keyword">var</span> pRoot *treeNode</span><br><span class="line">	pRoot.nilTest() <span class="comment">//nil invoker</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="中序遍历"><a href="#中序遍历" class="headerlink" title="中序遍历"></a>中序遍历</h3><figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="comment">//中序遍历,递归</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(node *treeNode)</span> <span class="title">traverse</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="keyword">if</span> node == <span class="literal">nil</span> &#123;</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line">	node.left.traverse()</span><br><span class="line">	node.<span class="built_in">print</span>()</span><br><span class="line">	node.right.traverse()</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="keyword">var</span> root treeNode</span><br><span class="line"></span><br><span class="line">	fmt.Println(root) <span class="comment">//&#123;0 &lt;nil&gt; &lt;nil&gt;&#125;</span></span><br><span class="line"></span><br><span class="line">	root = treeNode&#123;value: <span class="number">3</span>&#125;</span><br><span class="line">	root.left = &amp;treeNode&#123;&#125;</span><br><span class="line">	root.right = &amp;treeNode&#123;<span class="number">5</span>, <span class="literal">nil</span>, <span class="literal">nil</span>&#125;</span><br><span class="line">	<span class="comment">//指针也可用.</span></span><br><span class="line">	root.right.left = <span class="built_in">new</span>(treeNode)</span><br><span class="line">	root.left.right = createNode(<span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">	root.right.left.setValue(<span class="number">4</span>)</span><br><span class="line"></span><br><span class="line">	root.traverse() <span class="comment">//0 2 3 4 5</span></span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="值接收者vs指针接收者"><a href="#值接收者vs指针接收者" class="headerlink" title="值接收者vs指针接收者"></a>值接收者vs指针接收者</h3><ol>
+<li>要改变内容必须使用指针接收者</li>
+<li>结构过大也考虑指针接收者</li>
+<li>一致性（建议，不强制）：如有指针接收者最好全为指针接收者</li>
+<li>值接收者为go特有</li>
+<li>值/指针接收者均可接收值/指针，亦即：<strong>值接收者和指针接收者并不影响调用者的调用方式</strong></li>
+</ol>
+
         </div>
 
         <blockquote class="post-copyright">
@@ -177,7 +224,7 @@
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2020-05-10T18:41:07.653Z" itemprop="dateUpdated">2020-05-11 02:41:07</time>
+    最后更新时间：<time datetime="2020-05-14T17:41:19.982Z" itemprop="dateUpdated">2020-05-15 01:41:19</time>
 </span><br>
 
 
@@ -203,6 +250,8 @@
 
         <div class="post-footer">
             
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/go/">go</a></li></ul>
+
 
             
 <div class="page-share-wrap">
@@ -221,7 +270,7 @@
         </a>
       </li>
       <li>
-        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://techzealot.github.io/2020/05/10/go面向对象-结构体和方法/&title=《(10) go面向对象-结构体和方法》 — techzealot&source=" data-title=" QQ">
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://techzealot.github.io/2020/05/10/go面向对象-结构体和方法/&title=《(10) go面向对象-结构体和方法》 — techzealot&source=本章主要介绍go语言结构体的使用及方法的定义" data-title=" QQ">
           <i class="icon icon-qq"></i>
         </a>
       </li>
@@ -375,7 +424,7 @@
         </a>
       </li>
       <li>
-        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://techzealot.github.io/2020/05/10/go面向对象-结构体和方法/&title=《(10) go面向对象-结构体和方法》 — techzealot&source=" data-title=" QQ">
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://techzealot.github.io/2020/05/10/go面向对象-结构体和方法/&title=《(10) go面向对象-结构体和方法》 — techzealot&source=本章主要介绍go语言结构体的使用及方法的定义" data-title=" QQ">
           <i class="icon icon-qq"></i>
         </a>
       </li>
