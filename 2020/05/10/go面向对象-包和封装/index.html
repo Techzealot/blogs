@@ -21,15 +21,18 @@
     
     
     <meta name="keywords" content="go">
-    <meta name="keywords" content="go">
+    <meta name="description" content="本章主要介绍go语言的包和封装">
+<meta name="keywords" content="go">
 <meta property="og:type" content="article">
 <meta property="og:title" content="(11) go面向对象-包和封装">
 <meta property="og:url" content="https://techzealot.github.io/2020/05/10/go面向对象-包和封装/index.html">
 <meta property="og:site_name" content="techzealot">
+<meta property="og:description" content="本章主要介绍go语言的包和封装">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2020-05-10T18:41:27.411Z">
+<meta property="og:updated_time" content="2020-05-18T17:21:00.036Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="(11) go面向对象-包和封装">
+<meta name="twitter:description" content="本章主要介绍go语言的包和封装">
     
     <link rel="shortcut icon" href="/img/favicon.ico">
     <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
@@ -150,6 +153,13 @@
 
 <div class="container body-wrap">
     
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#封装"><span class="post-toc-number">1.</span> <span class="post-toc-text">封装</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#包"><span class="post-toc-number">2.</span> <span class="post-toc-text">包</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#工程化组织"><span class="post-toc-number">3.</span> <span class="post-toc-text">工程化组织</span></a></li></ol>
+        </nav>
+    </aside>
+
 
 <article id="post-go面向对象-包和封装"
   class="post-article article-type-post fade" itemprop="blogPost">
@@ -170,7 +180,23 @@
 
         </div>
         <div class="post-content" id="post-content" itemprop="postContent">
-            
+            <p>本章主要介绍go语言的包和封装</p>
+<a id="more"></a>
+<h3 id="封装"><a href="#封装" class="headerlink" title="封装"></a>封装</h3><ol>
+<li>名字一般使用CamelCase</li>
+<li>首字母大写表示public（包外可见）</li>
+<li>首字母小写表示private（包内可见）</li>
+</ol>
+<h3 id="包"><a href="#包" class="headerlink" title="包"></a>包</h3><ol>
+<li>每个目录下只能有一个包（一个包可分散在多个文件），包名不必与目录名相关</li>
+<li>main包包含可执行入口，main函数不在main包不能运行,不同目录下的main包成员不能互相访问</li>
+<li>为结构定义的方法必须放在同一个包内，但可以是不同的文件（方便协作开发）</li>
+</ol>
+<h3 id="工程化组织"><a href="#工程化组织" class="headerlink" title="工程化组织"></a>工程化组织</h3><p>将每个含有main函数的文件分散在不同的目录中，通常包名与文件名相同</p>
+<blockquote>
+<p>可参考golang.org/x/tools/cmd</p>
+</blockquote>
+
         </div>
 
         <blockquote class="post-copyright">
@@ -178,7 +204,7 @@
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2020-05-10T18:41:27.411Z" itemprop="dateUpdated">2020-05-11 02:41:27</time>
+    最后更新时间：<time datetime="2020-05-18T17:21:00.036Z" itemprop="dateUpdated">2020-05-19 01:21:00</time>
 </span><br>
 
 
@@ -224,7 +250,7 @@
         </a>
       </li>
       <li>
-        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://techzealot.github.io/2020/05/10/go面向对象-包和封装/&title=《(11) go面向对象-包和封装》 — techzealot&source=" data-title=" QQ">
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://techzealot.github.io/2020/05/10/go面向对象-包和封装/&title=《(11) go面向对象-包和封装》 — techzealot&source=本章主要介绍go语言的包和封装" data-title=" QQ">
           <i class="icon icon-qq"></i>
         </a>
       </li>
@@ -378,7 +404,7 @@
         </a>
       </li>
       <li>
-        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://techzealot.github.io/2020/05/10/go面向对象-包和封装/&title=《(11) go面向对象-包和封装》 — techzealot&source=" data-title=" QQ">
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://techzealot.github.io/2020/05/10/go面向对象-包和封装/&title=《(11) go面向对象-包和封装》 — techzealot&source=本章主要介绍go语言的包和封装" data-title=" QQ">
           <i class="icon icon-qq"></i>
         </a>
       </li>
