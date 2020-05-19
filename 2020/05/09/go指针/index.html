@@ -29,7 +29,7 @@
 <meta property="og:site_name" content="techzealot">
 <meta property="og:description" content="本章主要介绍go语言指针用法及注意事项">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2020-05-10T17:21:24.170Z">
+<meta property="og:updated_time" content="2020-05-19T16:39:05.410Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="(5) go指针">
 <meta name="twitter:description" content="本章主要介绍go语言指针用法及注意事项">
@@ -156,7 +156,7 @@
     <aside class="post-widget">
         <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
             <h4>TOC</h4>
-            <ol class="post-toc"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#go语言指针不能参与运算，但可以改变指向"><span class="post-toc-number">1.</span> <span class="post-toc-text">go语言指针不能参与运算，但可以改变指向</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#go语言函数参数是值传递"><span class="post-toc-number">2.</span> <span class="post-toc-text">go语言函数参数是值传递</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#go语言支持多重赋值"><span class="post-toc-number">3.</span> <span class="post-toc-text">go语言支持多重赋值</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#交换函数实现"><span class="post-toc-number">4.</span> <span class="post-toc-text">交换函数实现</span></a></li></ol>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#go语言指针不能参与运算，但可以改变指向"><span class="post-toc-number">1.</span> <span class="post-toc-text">go语言指针不能参与运算，但可以改变指向</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#go语言函数参数是值传递"><span class="post-toc-number">2.</span> <span class="post-toc-text">go语言函数参数是值传递</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#go语言支持多重赋值"><span class="post-toc-number">3.</span> <span class="post-toc-text">go语言支持多重赋值</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#交换函数实现"><span class="post-toc-number">4.</span> <span class="post-toc-text">交换函数实现</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#指针变量与非指针变量"><span class="post-toc-number">5.</span> <span class="post-toc-text">指针变量与非指针变量</span></a></li></ol>
         </nav>
     </aside>
 
@@ -184,12 +184,17 @@
 <a id="more"></a>
 <h3 id="go语言指针不能参与运算，但可以改变指向"><a href="#go语言指针不能参与运算，但可以改变指向" class="headerlink" title="go语言指针不能参与运算，但可以改变指向"></a>go语言指针不能参与运算，但可以改变指向</h3><figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="keyword">var</span> a <span class="keyword">int</span> = <span class="number">2</span></span><br><span class="line">	<span class="keyword">var</span> pa *<span class="keyword">int</span> = &amp;a</span><br><span class="line">	*pa = <span class="number">3</span></span><br><span class="line">	fmt.Println(a, pa, *pa, &amp;pa, &amp;a) <span class="comment">//3 0xc00000a0e8 3 0xc000006028 0xc00000a0e8</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h3 id="go语言函数参数是值传递"><a href="#go语言函数参数是值传递" class="headerlink" title="go语言函数参数是值传递"></a>go语言函数参数是值传递</h3><p>go语言只有值传递一种形式：</p>
-<p>默认通过<strong>数据拷贝</strong>进行值传递，可通过传递指针实现传递引用的效果</p>
+<p>默认通过<strong>数据拷贝</strong>进行值传递，可通过传递指针(地址值)实现传递引用的效果</p>
 <p>因此在设计对象时就应该考虑传递形式</p>
 <figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">passByValue</span><span class="params">(a <span class="keyword">int</span>)</span></span> &#123;</span><br><span class="line">	a++</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">passByRef</span><span class="params">(a *<span class="keyword">int</span>)</span></span> &#123;</span><br><span class="line">	*a++</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	a := <span class="number">2</span></span><br><span class="line">	passByValue(a)</span><br><span class="line">	fmt.Println(a) <span class="comment">//2</span></span><br><span class="line">	passByRef(&amp;a)</span><br><span class="line">	fmt.Println(a) <span class="comment">//3</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h3 id="go语言支持多重赋值"><a href="#go语言支持多重赋值" class="headerlink" title="go语言支持多重赋值"></a>go语言支持多重赋值</h3><p>两个变量交换不需要引入第三个参数</p>
 <figure class="highlight go"><table><tr><td class="code"><pre><span class="line">a,b <span class="keyword">int</span>=<span class="number">3</span>,<span class="number">4</span></span><br><span class="line">a,b=b,a</span><br></pre></td></tr></table></figure>
 <h3 id="交换函数实现"><a href="#交换函数实现" class="headerlink" title="交换函数实现"></a>交换函数实现</h3><figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="comment">//推荐做法</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">swapNoSideEffect</span><span class="params">(a, b <span class="keyword">int</span>)</span> <span class="params">(<span class="keyword">int</span>, <span class="keyword">int</span>)</span></span> &#123;</span><br><span class="line">	<span class="keyword">return</span> b, a</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">swap</span><span class="params">(a, b *<span class="keyword">int</span>)</span></span> &#123;</span><br><span class="line">	*a, *b = *b, *a</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	c, d := <span class="number">5</span>, <span class="number">6</span></span><br><span class="line">	swap(&amp;c, &amp;d)</span><br><span class="line">	fmt.Println(c, d) <span class="comment">//6,5</span></span><br><span class="line"></span><br><span class="line">	c, d = swapNoSideEffect(c, d)</span><br><span class="line">	fmt.Println(c, d) <span class="comment">//5,6</span></span><br><span class="line">	<span class="keyword">var</span> e <span class="keyword">int</span></span><br><span class="line">	c, d, e = d, c, d/c</span><br><span class="line">	fmt.Println(c, d, e) <span class="comment">//6 5 1 将右侧变量先运算替换，然后一次赋多值</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="指针变量与非指针变量"><a href="#指针变量与非指针变量" class="headerlink" title="指针变量与非指针变量"></a>指针变量与非指针变量</h3><blockquote>
+<p>指针变量pa的值为<strong>所指向变量的地址值</strong>，*pa <strong>取所指向变量</strong> &amp;pa 取该变量的地址</p>
+<p>非指针变量pb的值为 <strong>变量值</strong> *pb <strong>非法</strong> &amp;pb <strong>取该变量的地址</strong></p>
+</blockquote>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> pa *<span class="keyword">int</span></span><br><span class="line">fmt.Println(*pa)</span><br><span class="line">fmt.Println(&amp;pa)</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> pb <span class="keyword">int</span></span><br><span class="line">fmt.Println(&amp;pb)</span><br><span class="line"><span class="comment">//fmt.Println(*pb) //compile error</span></span><br></pre></td></tr></table></figure>
 
         </div>
 
@@ -198,7 +203,7 @@
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2020-05-10T17:21:24.170Z" itemprop="dateUpdated">2020-05-11 01:21:24</time>
+    最后更新时间：<time datetime="2020-05-19T16:39:05.410Z" itemprop="dateUpdated">2020-05-20 00:39:05</time>
 </span><br>
 
 
