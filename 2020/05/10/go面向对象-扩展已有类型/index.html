@@ -29,7 +29,7 @@
 <meta property="og:site_name" content="techzealot">
 <meta property="og:description" content="本章主要介绍go语言中如何扩展已有类型">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2020-05-19T17:09:41.819Z">
+<meta property="og:updated_time" content="2020-05-19T17:13:29.021Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="(12) go面向对象-扩展已有类型">
 <meta name="twitter:description" content="本章主要介绍go语言中如何扩展已有类型">
@@ -198,7 +198,6 @@
 </blockquote>
 <figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> embeded</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">"helloworld/tree"</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//内嵌 使用匿名的成员变量进行组合,语法糖,减少代码量,相当于对匿名成员的代理</span></span><br><span class="line"><span class="keyword">type</span> ENode <span class="keyword">struct</span> &#123;</span><br><span class="line">	<span class="comment">//默认名称为简单结构名Node</span></span><br><span class="line">	*tree.Node</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(myNode *ENode)</span> <span class="title">PostOrder</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="keyword">if</span> myNode == <span class="literal">nil</span> || myNode.Node == <span class="literal">nil</span> &#123;</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line">	left := ENode&#123;myNode.Left&#125;</span><br><span class="line">	left.postOrder()</span><br><span class="line">	right := ENode&#123;myNode.Right&#125;</span><br><span class="line">	right.postOrder()</span><br><span class="line">	myNode.Print()</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//shadow method for tree.Node</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(myNode *ENode)</span> <span class="title">Traverse</span><span class="params">()</span></span> &#123;</span><br><span class="line">	fmt.Println(<span class="string">"this is a shadow method for tree.Node"</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="keyword">var</span> root embeded.ENode</span><br><span class="line"></span><br><span class="line">	fmt.Println(root) <span class="comment">//&#123;0 &lt;nil&gt; &lt;nil&gt;&#125;</span></span><br><span class="line"></span><br><span class="line">	root = embeded.ENode&#123;Node: &amp;tree.Node&#123;Value: <span class="number">3</span>&#125;&#125;</span><br><span class="line">	root.Left = &amp;tree.Node&#123;&#125;</span><br><span class="line">	root.Right = &amp;tree.Node&#123;Value: <span class="number">5</span>, Left: <span class="literal">nil</span>, Right: <span class="literal">nil</span>&#125;</span><br><span class="line">	<span class="comment">//指针也可用.</span></span><br><span class="line">	root.Right.Left = <span class="built_in">new</span>(tree.Node)</span><br><span class="line">	root.Left.Right = tree.CreateNode(<span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">	root.Right.Left.SetValue(<span class="number">4</span>)</span><br><span class="line"></span><br><span class="line">	root.Traverse() <span class="comment">//this is a shadow method for tree.Node</span></span><br><span class="line"></span><br><span class="line">	root.Node.Traverse() <span class="comment">//0 2 3 4 5</span></span><br><span class="line">    </span><br><span class="line">	fmt.Println()</span><br><span class="line"></span><br><span class="line">	root.PostOrder() <span class="comment">//2 0 4 5 3</span></span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>#### </p>
 
         </div>
 
@@ -207,7 +206,7 @@
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2020-05-19T17:09:41.819Z" itemprop="dateUpdated">2020-05-20 01:09:41</time>
+    最后更新时间：<time datetime="2020-05-19T17:13:29.021Z" itemprop="dateUpdated">2020-05-20 01:13:29</time>
 </span><br>
 
 
