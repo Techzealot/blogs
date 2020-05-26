@@ -21,18 +21,18 @@
     
     
     <meta name="keywords" content="go">
-    <meta name="description" content="本章主要介绍go语言依赖管理的发展历程">
+    <meta name="description" content="本章主要介绍go语言依赖管理">
 <meta name="keywords" content="go">
 <meta property="og:type" content="article">
 <meta property="og:title" content="(13) go依赖管理">
 <meta property="og:url" content="https://techzealot.github.io/2020/05/10/go依赖管理/index.html">
 <meta property="og:site_name" content="techzealot">
-<meta property="og:description" content="本章主要介绍go语言依赖管理的发展历程">
+<meta property="og:description" content="本章主要介绍go语言依赖管理">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2020-05-25T17:37:33.368Z">
+<meta property="og:updated_time" content="2020-05-25T17:43:32.373Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="(13) go依赖管理">
-<meta name="twitter:description" content="本章主要介绍go语言依赖管理的发展历程">
+<meta name="twitter:description" content="本章主要介绍go语言依赖管理">
     
     <link rel="shortcut icon" href="/img/favicon.ico">
     <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
@@ -156,7 +156,7 @@
     <aside class="post-widget">
         <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
             <h4>TOC</h4>
-            <ol class="post-toc"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#go语言依赖管理经历了三个阶段"><span class="post-toc-number">1.</span> <span class="post-toc-text">go语言依赖管理经历了三个阶段</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#GOPATH（废弃）"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">GOPATH（废弃）</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#GOVENDOR（废弃）"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">GOVENDOR（废弃）</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#GOMOD（推荐）"><span class="post-toc-number">1.3.</span> <span class="post-toc-text">GOMOD（推荐）</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#迁移至GOMOD"><span class="post-toc-number">1.4.</span> <span class="post-toc-text">迁移至GOMOD</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#GOPROXY国内镜像配置"><span class="post-toc-number">1.5.</span> <span class="post-toc-text">GOPROXY国内镜像配置</span></a></li></ol></li></ol>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#go语言依赖管理三个阶段"><span class="post-toc-number">1.</span> <span class="post-toc-text">go语言依赖管理三个阶段</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#GOPATH（废弃）"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">GOPATH（废弃）</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#GOVENDOR（废弃）"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">GOVENDOR（废弃）</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#GOMOD（推荐）"><span class="post-toc-number">1.3.</span> <span class="post-toc-text">GOMOD（推荐）</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#迁移至GOMOD"><span class="post-toc-number">1.4.</span> <span class="post-toc-text">迁移至GOMOD</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#GOPROXY国内镜像配置"><span class="post-toc-number">1.5.</span> <span class="post-toc-text">GOPROXY国内镜像配置</span></a></li></ol></li></ol>
         </nav>
     </aside>
 
@@ -180,28 +180,28 @@
 
         </div>
         <div class="post-content" id="post-content" itemprop="postContent">
-            <p>本章主要介绍go语言依赖管理的发展历程</p>
+            <p>本章主要介绍go语言依赖管理</p>
 <a id="more"></a>
-<h3 id="go语言依赖管理经历了三个阶段"><a href="#go语言依赖管理经历了三个阶段" class="headerlink" title="go语言依赖管理经历了三个阶段"></a>go语言依赖管理经历了三个阶段</h3><blockquote>
+<h3 id="go语言依赖管理三个阶段"><a href="#go语言依赖管理三个阶段" class="headerlink" title="go语言依赖管理三个阶段"></a>go语言依赖管理三个阶段</h3><blockquote>
 <p>GOPATH -&gt; GOVENDOR -&gt; GOMOD</p>
 </blockquote>
 <h4 id="GOPATH（废弃）"><a href="#GOPATH（废弃）" class="headerlink" title="GOPATH（废弃）"></a>GOPATH（废弃）</h4><p>第三方库依赖放在GOPATH下</p>
 <p>${GOPATH}/src/</p>
-<p>|– our project</p>
-<p>|– lib1(src)</p>
-<p>|– lib2(src)</p>
+<p>|- - our project</p>
+<p>|- - lib1(src)</p>
+<p>|- - lib2(src)</p>
 <h4 id="GOVENDOR（废弃）"><a href="#GOVENDOR（废弃）" class="headerlink" title="GOVENDOR（废弃）"></a>GOVENDOR（废弃）</h4><blockquote>
 <p>每个项目有自己的vendor目录，存放第三方库</p>
 </blockquote>
 <p>解决GOPATH下依赖不同版本的问题</p>
 <p>${GOPATH}/src/</p>
-<p>|– our project</p>
-<p>   |— vendor</p>
-<p>​        |—- lib-common-v1</p>
-<p>|– lib1(src)</p>
-<p>   |— vendor </p>
-<p>​        |—- lib-common-v2</p>
-<p>|– lib2(src)</p>
+<p>|- - our project</p>
+<p>   |- - - vendor</p>
+<p>​        |- - - - lib-common-v1</p>
+<p>|- - lib1(src)</p>
+<p>   |- - - vendor </p>
+<p>​        |- - - - lib-common-v2</p>
+<p>|- - lib2(src)</p>
 <h4 id="GOMOD（推荐）"><a href="#GOMOD（推荐）" class="headerlink" title="GOMOD（推荐）"></a>GOMOD（推荐）</h4><p>优势：</p>
 <ol>
 <li>支持镜像</li>
@@ -227,7 +227,7 @@
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2020-05-25T17:37:33.368Z" itemprop="dateUpdated">2020-05-26 01:37:33</time>
+    最后更新时间：<time datetime="2020-05-25T17:43:32.373Z" itemprop="dateUpdated">2020-05-26 01:43:32</time>
 </span><br>
 
 
@@ -273,7 +273,7 @@
         </a>
       </li>
       <li>
-        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://techzealot.github.io/2020/05/10/go依赖管理/&title=《(13) go依赖管理》 — techzealot&source=本章主要介绍go语言依赖管理的发展历程" data-title=" QQ">
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://techzealot.github.io/2020/05/10/go依赖管理/&title=《(13) go依赖管理》 — techzealot&source=本章主要介绍go语言依赖管理" data-title=" QQ">
           <i class="icon icon-qq"></i>
         </a>
       </li>
@@ -308,7 +308,14 @@
     </div>
 
     
-<nav class="post-nav flex-row flex-justify-between flex-row-reverse">
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2020/05/27/go接口/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">(14)go接口</h4>
+      </a>
+    </div>
   
 
   
@@ -420,7 +427,7 @@
         </a>
       </li>
       <li>
-        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://techzealot.github.io/2020/05/10/go依赖管理/&title=《(13) go依赖管理》 — techzealot&source=本章主要介绍go语言依赖管理的发展历程" data-title=" QQ">
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://techzealot.github.io/2020/05/10/go依赖管理/&title=《(13) go依赖管理》 — techzealot&source=本章主要介绍go语言依赖管理" data-title=" QQ">
           <i class="icon icon-qq"></i>
         </a>
       </li>
