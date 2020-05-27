@@ -29,7 +29,7 @@
 <meta property="og:site_name" content="techzealot">
 <meta property="og:description" content="本章介绍go语言接口的基本知识">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2020-05-26T17:54:33.499Z">
+<meta property="og:updated_time" content="2020-05-27T17:34:24.640Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="(14)go接口">
 <meta name="twitter:description" content="本章介绍go语言接口的基本知识">
@@ -156,7 +156,7 @@
     <aside class="post-widget">
         <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
             <h4>TOC</h4>
-            <ol class="post-toc"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#接口"><span class="post-toc-number">1.</span> <span class="post-toc-text">接口</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#接口实现-duck-typing"><span class="post-toc-number">2.</span> <span class="post-toc-text">接口实现(duck typing)</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#接口类型获取"><span class="post-toc-number">3.</span> <span class="post-toc-text">接口类型获取</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#switch"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">switch</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#type-assertion"><span class="post-toc-number">3.2.</span> <span class="post-toc-text">type assertion</span></a></li></ol></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#接口变量的构成"><span class="post-toc-number">4.</span> <span class="post-toc-text">接口变量的构成</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#接口变量的使用"><span class="post-toc-number">5.</span> <span class="post-toc-text">接口变量的使用</span></a></li></ol>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#接口"><span class="post-toc-number">1.</span> <span class="post-toc-text">接口</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#接口实现-duck-typing"><span class="post-toc-number">2.</span> <span class="post-toc-text">接口实现(duck typing)</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#接口类型获取"><span class="post-toc-number">3.</span> <span class="post-toc-text">接口类型获取</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#switch"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">switch</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#type-assertion"><span class="post-toc-number">3.2.</span> <span class="post-toc-text">type assertion</span></a></li></ol></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#接口变量的构成"><span class="post-toc-number">4.</span> <span class="post-toc-text">接口变量的构成</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#接口变量的使用"><span class="post-toc-number">5.</span> <span class="post-toc-text">接口变量的使用</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#接口的组合"><span class="post-toc-number">6.</span> <span class="post-toc-text">接口的组合</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#常用系统接口"><span class="post-toc-number">7.</span> <span class="post-toc-text">常用系统接口</span></a></li></ol>
         </nav>
     </aside>
 
@@ -207,7 +207,14 @@
 <p>interface{}表示任何类型</p>
 </blockquote>
 <figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> genericqueue</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> Queue []<span class="keyword">interface</span>&#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//指针接收者传递的为地址值，操作时需要*(取指针)操作</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(q *Queue)</span> <span class="title">Push</span><span class="params">(v <span class="keyword">interface</span>&#123;&#125;)</span></span> &#123;</span><br><span class="line">	*q = <span class="built_in">append</span>(*q, v)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(q *Queue)</span> <span class="title">Pop</span><span class="params">()</span> <span class="title">interface</span></span>&#123;&#125; &#123;</span><br><span class="line">	head := (*q)[<span class="number">0</span>]</span><br><span class="line">	*q = (*q)[<span class="number">1</span>:]</span><br><span class="line">	<span class="keyword">return</span> head</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(q *Queue)</span> <span class="title">IsEmpty</span><span class="params">()</span> <span class="title">bool</span></span> &#123;</span><br><span class="line">	<span class="keyword">return</span> <span class="built_in">len</span>(*q) == <span class="number">0</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
+<h3 id="接口的组合"><a href="#接口的组合" class="headerlink" title="接口的组合"></a>接口的组合</h3><p>接口定义</p>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> inf</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> Retriever <span class="keyword">interface</span> &#123;</span><br><span class="line">	Get(url <span class="keyword">string</span>) <span class="keyword">string</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> Poster <span class="keyword">interface</span> &#123;</span><br><span class="line">	Post(url <span class="keyword">string</span>, form <span class="keyword">map</span>[<span class="keyword">string</span>]<span class="keyword">string</span>) <span class="keyword">string</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//接口组合</span></span><br><span class="line"><span class="keyword">type</span> RetrieverPoster <span class="keyword">interface</span> &#123;</span><br><span class="line">	Poster</span><br><span class="line">	Retriever</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>接口实现</p>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> composer</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> MyPoster <span class="keyword">struct</span> &#123;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(m MyPoster)</span> <span class="title">Post</span><span class="params">(url <span class="keyword">string</span>, form <span class="keyword">map</span>[<span class="keyword">string</span>]<span class="keyword">string</span>)</span> <span class="title">string</span></span> &#123;</span><br><span class="line">	<span class="built_in">panic</span>(<span class="string">"implement me"</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(m MyPoster)</span> <span class="title">Get</span><span class="params">(url <span class="keyword">string</span>)</span> <span class="title">string</span></span> &#123;</span><br><span class="line">	<span class="built_in">panic</span>(<span class="string">"implement me"</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="常用系统接口"><a href="#常用系统接口" class="headerlink" title="常用系统接口"></a>常用系统接口</h3><figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="comment">// Stringer is implemented by any value that has a String method,</span></span><br><span class="line"><span class="comment">// which defines the ``native'' format for that value.</span></span><br><span class="line"><span class="comment">// The String method is used to print values passed as an operand</span></span><br><span class="line"><span class="comment">// to any format that accepts a string or to an unformatted printer</span></span><br><span class="line"><span class="comment">// such as Print.</span></span><br><span class="line"><span class="keyword">type</span> Stringer <span class="keyword">interface</span> &#123;</span><br><span class="line">	String() <span class="keyword">string</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">type</span> Reader <span class="keyword">interface</span> &#123;</span><br><span class="line">	Read(p []<span class="keyword">byte</span>) (n <span class="keyword">int</span>, err error)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">type</span> Writer <span class="keyword">interface</span> &#123;</span><br><span class="line">	Write(p []<span class="keyword">byte</span>) (n <span class="keyword">int</span>, err error)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="comment">// ReadWriter is the interface that groups the basic Read and Write methods.</span></span><br><span class="line"><span class="keyword">type</span> ReadWriter <span class="keyword">interface</span> &#123;</span><br><span class="line">	Reader</span><br><span class="line">	Writer</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
         </div>
 
         <blockquote class="post-copyright">
@@ -215,7 +222,7 @@
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2020-05-26T17:54:33.499Z" itemprop="dateUpdated">2020-05-27 01:54:33</time>
+    最后更新时间：<time datetime="2020-05-27T17:34:24.640Z" itemprop="dateUpdated">2020-05-28 01:34:24</time>
 </span><br>
 
 
@@ -296,7 +303,14 @@
     </div>
 
     
-<nav class="post-nav flex-row flex-justify-between flex-row-reverse">
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2020/05/28/go函数式编程/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">go函数式编程</h4>
+      </a>
+    </div>
   
 
   
